@@ -1,0 +1,26 @@
+* {
+  --background-color: #1D1D1D;
+  --information-background: #111111;
+  --thumbnail-background: #1b4154;
+}
+body {
+  margin: 0;
+  padding: 0;
+  color: white;
+  background: var(--background-color);
+}
+.important-rivers {
+  z-index: 999 !important;
+}
+.river-annotation {
+  background: black !important;
+  color: white !important;
+  font-size: 17px;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 3px !important;
+}
+.leaflet-tooltip-top:before {
+  border-top: none;
+  margin-bottom: 0;
+}
