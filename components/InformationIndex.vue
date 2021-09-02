@@ -3,9 +3,9 @@
     <div class='title-container'>
       <span class='main-title'>{{ chineseTitle }}</span>
       <span class='secondary-title'>{{ englishTitle }}</span>
+      <span class='secondary-title' style='margin-top: 5px'>{{ date }} 更新</span>
     </div>
-    <div class='time-container'>
-      20xx年x月x日 xx:xx
+    <div class='time-container' style='color: black'>
     </div>
   </div>
 </template>
@@ -22,6 +22,34 @@ export default {
       type: String,
       required: true
     }
+  },
+  data() {
+    return {
+      date: "",
+      floodState: this.$store.getters.getFloodState
+    }
+  },
+  watch: {
+    "$store.state.floodState" () {
+      this.floodState = this.$store.getters.getFloodState
+      this.parseInfoTime()
+    }
+  },
+  mounted() {
+    this.parseInfoTime()
+  },
+  methods: {
+    parseInfoTime() {
+      this.date = Intl.DateTimeFormat(undefined, {
+        hour12: false,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      }).format(new Date().setTime(this.floodState.timestamp*1000))
+    }
   }
 }
 </script>
@@ -30,10 +58,11 @@ export default {
 .title-container {
   margin-top: 25px;
   width: 770px;
-  height: 135px;
+  height: 185px;
   padding-top: 5px;
   padding-left: 25px;
   background: var(--information-background);
+  opacity: 0.8;
   user-select: none;
 }
 

@@ -2,27 +2,25 @@
   <div class='map-container'>
     <client-only>
       <l-map ref="map"
-             style='background: var(--background-color)'
+             style='background: #a4a8ab'
              :options='options'
              :center='center'
-             :zoom='10'
+             :zoom='10.5'
              @update:bounds='updateBounds'
-             @update:zoom='updateZoom'
-             @update:center='updateCenter'
              @ready='ready'
-             @click='testLatLng'
       >
         <l-geo-json
           :geojson='shanghaiGeoJson'
           :options='geoJsonStyle'
         ></l-geo-json>
         <l-geo-json
+          ref='riverGeoJsonInstance'
           :geojson='riverGeoJson'
           :options='riverGeoJsonStyle'
         ></l-geo-json>
         <div
           v-for='i in riverAnnotations'
-          :key='i["name"]'>
+          :key='i["id"]'>
           <l-marker
             :opacity='0'
             :lat-lng='i["marker"]'
@@ -32,14 +30,24 @@
             >{{ i["name"] }}</l-tooltip>
           </l-marker>
         </div>
+        <div
+          v-for='i in stationMarkers'
+          :key='i["id"]'>
+          <l-marker :lat-lng='i["lng_lat"]'>
+            <l-icon
+              :icon-url="i['icon']"
+              :icon-size='[70, 70]'
+              :icon-anchor='[27, 65]'
+            ></l-icon>
+          </l-marker>
+        </div>
       </l-map>
     </client-only>
   </div>
 </template>
 
+<!--suppress JSUnresolvedVariable, JSUnresolvedFunction -->
 <script>
-import logger from '@/assets/logger'
-
 export default {
   name: 'Map',
   data() {
@@ -47,9 +55,10 @@ export default {
       shanghaiGeoJson: this.$store.getters.getShanghaiGeoJson,
       riverGeoJson: this.$store.getters.getRiverGeoJson,
       riverAnnotations: this.$store.getters.getRiverAnnotation,
+      floodState: this.$store.getters.getFloodState,
       center: {
-        "lat": 31.15170747813368,
-        "lng": 121.29318237304689
+        "lat": 31.189081341481803,
+        "lng": 121.24952857536623
       },
       options: {
         zoomSnap: 0.01,
@@ -59,20 +68,15 @@ export default {
       },
       geoJsonStyle: {
         style: {
-          fillColor: "#3A3A3A",
+          fillColor: "white",
           color: "#7F7F7F",
           weight: 1
         }
       },
       riverGeoJsonStyle: {
         style: (feature) => {
-          // TODO: Color changing by levels
-          if (feature.properties.important) {
-            // noinspection JSUnresolvedVariable
-            console.log(feature.properties.name + " " + feature.properties.river_id);
-          }
           return {
-            color: "#8AB5E5",
+            color: "#808080",
             weight: feature.properties.important ? 10 : 2,
             className: feature.properties.important ? "important-rivers" : ""
           }
@@ -83,28 +87,88 @@ export default {
         direction: "top",
         offset: [-15, 55],
         className: "river-annotation"
-      }
+      },
+      CORRESPOND_ICONS: {
+        1: "/icons/flood_caution.svg",
+        2: "/icons/flood_warning.svg",
+        3: "/icons/flood_danger.svg",
+        4: "/icons/flood_occur.svg"
+      },
+      stationMarkers: [],
+      riverState: {}
+    }
+  },
+  watch: {
+    "$store.state.floodState" () {
+      // eslint-disable-next-line no-console
+      console.log("Updating...")
+      this.floodState = this.$store.getters.getFloodState
+      this.parseFloodState()
     }
   },
   methods: {
-    saveMap(obj) {
-      logger.saveMap(obj);
-    },
     updateBounds(bounds) {
       this.$store.commit("setMapBounds", bounds);
     },
     ready(obj) {
       this.$store.commit("setMapBounds", obj.getBounds());
-      this.saveMap(obj);
+      this.parseFloodState();
     },
-    updateZoom(zoom) {
-      console.log(zoom)
+    getStyle(feature) {
+      let color = "#808080";
+      if (feature.properties.important) {
+        switch (this.riverState[feature.properties.name]) {
+          case 0:
+            color = "dodgerblue";
+            break;
+          case 1:
+            color = "#EEE414";
+            break;
+          case 2:
+            color = "#FF3E1A";
+            break;
+          case 3:
+            color = "#B31AB1";
+            break;
+          case 4:
+            color = "#111111";
+            break;
+        }
+      }
+      return {
+        color,
+        weight: feature.properties.important ? 10 : 2,
+        dashArray: "1, 1",
+        className: feature.properties.important ? "important-rivers" : ""
+      }
     },
-    updateCenter(center) {
-      console.log(center)
-    },
-    testLatLng(e) {
-      console.log(e.latlng)
+    parseFloodState() {
+      this.stationMarkers = [];
+      if (this.floodState === undefined) {
+        // eslint-disable-next-line no-console
+        console.warn("Failed to parse flood state: undefined")
+        return
+      }
+      for (const i in this.floodState.flood) {
+        let maximumLevelPerRiver = 0;
+        for (const j in this.floodState.flood[i]) {
+          const stationCurrentState = this.floodState.flood[i][j];
+          const stationLongitude = this.floodState.station[j].longitude;
+          const stationLatitude = this.floodState.station[j].latitude;
+          if (stationCurrentState === 0) {continue;}
+          if (stationCurrentState > maximumLevelPerRiver) {
+            maximumLevelPerRiver = stationCurrentState;
+          }
+          const stationIcon = this.CORRESPOND_ICONS[stationCurrentState];
+          this.stationMarkers.push({
+            id: j,
+            icon: stationIcon,
+            lng_lat: [stationLatitude, stationLongitude]
+          })
+        }
+        this.riverState[i] = maximumLevelPerRiver
+      }
+      this.$refs.riverGeoJsonInstance.setOptionsStyle(this.getStyle)
     }
   }
 }
@@ -113,6 +177,6 @@ export default {
 <style scoped>
 .map-container {
   width: 1500px;
-  height: 1077px;
+  height: 1076px;
 }
 </style>

@@ -2,12 +2,23 @@
   --background-color: #1D1D1D;
   --information-background: #111111;
   --thumbnail-background: #1b4154;
+  --flood-normal-color: dodgerblue;
+  --flood-caution-color: #EEE414;
+  --flood-warning-color: #FF3E1A;
+  --flood-danger-color: #B31AB1;
+  --flood-occur-color: #111111;
+  -webkit-font-smoothing: antialiased;
+  font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif;
+}
+* ::selection {
+  background: #73c9e5;
+  color: inherit;
 }
 body {
-  margin: 0;
-  padding: 0;
-  color: white;
-  background: var(--background-color);
+  margin: 0 !important;
+  padding: 0 !important;
+  color: white !important;
+  background: var(--background-color) !important;
 }
 .important-rivers {
   z-index: 999 !important;
@@ -23,4 +34,19 @@ body {
 .leaflet-tooltip-top:before {
   border-top: none;
   margin-bottom: 0;
+}
+.flood-legends {
+  width: 300px;
+  height: 350px;
+  display: flex;
+  background: var(--information-background);
+  opacity: 0.8;
+  z-index: 99999999;
+  pointer-events: none;
+  flex-direction: column;
+  position: absolute;
+  top: 695px;
+  left: 1180px;
+  text-align: center;
+  font-size: 30px;
 }

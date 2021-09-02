@@ -1,14 +1,14 @@
 import webpack from 'webpack'
 
 const coreVersion = "0.1.0"
-const version = "0.1.0"
+const version = "1.0.0"
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'hazard-warning-system',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'zh-Hans'
     },
     meta: [
       { charset: 'utf-8' },
@@ -58,7 +58,7 @@ export default {
         "process.env.coreVersion": JSON.stringify(coreVersion)
       }));
       config.plugins.push(new webpack.BannerPlugin({
-        banner: "mighty-nuxt-core@" + coreVersion + " " +
+        banner: "HNWS - mighty-nuxt-core@" + coreVersion + " " +
           "Copyright © 2021 Homenetwork. All rights reserved.",
         entryOnly: true
       }));

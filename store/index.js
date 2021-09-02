@@ -1,8 +1,11 @@
+import logger from 'assets/logger'
+
 export const state = () => ({
   shanghaiGeoJson: {},
   riverGeoJson: {},
   mapBounds: null,
-  riverAnnotations: {}
+  riverAnnotations: {},
+  floodState: {}
 })
 export const mutations = {
   setShanghaiGeoJson(state, content) {
@@ -16,6 +19,9 @@ export const mutations = {
   },
   setRiverAnnotation(state, content) {
     state.riverAnnotations = content
+  },
+  setFloodState(state, content) {
+    state.floodState = content
   }
 }
 export const getters = {
@@ -30,6 +36,9 @@ export const getters = {
   },
   getRiverAnnotation(state) {
     return state.riverAnnotations
+  },
+  getFloodState(state) {
+    return state.floodState
   }
 }
 export const actions = {
@@ -39,27 +48,35 @@ export const actions = {
   async initializeData({ commit }) {
     // TODO: Remove t=
     const shanghaiGeoData = await this.$axios.get(
-      'https://earthquake.daziannetwork.com/api/HNWS/general/around_shanghai.geojson?t=' +
-      Date.now()
+      'https://earthquake.daziannetwork.com/api/HNWS/general/around_shanghai.geojson'
     ).catch((error) => {
       console.log("Error:", error);
     })
     commit('setShanghaiGeoJson', shanghaiGeoData.data)
 
     const riverGeoData = await this.$axios.get(
-      'https://earthquake.daziannetwork.com/api/HNWS/river/rivers.geojson?t=' +
-      Date.now()
+      'https://earthquake.daziannetwork.com/api/HNWS/river/rivers.geojson'
     ).catch((error) => {
       console.log("Error:", error);
     })
     commit('setRiverGeoJson', riverGeoData.data)
 
     const riverAnnotationData = await this.$axios.get(
-      'https://earthquake.daziannetwork.com/api/HNWS/river/river_annotations.json?t=' +
-      Date.now()
+      'https://earthquake.daziannetwork.com/api/HNWS/river/river_annotations.json'
     ).catch((error) => {
       console.log("Error:", error);
     })
     commit('setRiverAnnotation', riverAnnotationData.data)
+
+    const floodState = await this.$axios.get(
+      `${logger.apiUrl}/warning/flood_state`
+    ).catch((error) => {
+      console.warn('Error:', error)
+    })
+    try {
+      commit("setFloodState", floodState.data)
+    } catch (e) {
+      console.warn("Failed to set floodState.", e)
+    }
   }
 }
