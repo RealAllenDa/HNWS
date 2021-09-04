@@ -2,8 +2,8 @@
   <div class='flood-legends'>
     <div class='legend-title'>图例</div>
     <div v-for='i in floodLegends' :key='i.id' class='flood-legend-item'>
-      <div v-if='i.img_text !== undefined' class='river-text-demo river-demo'>{{ i.img_text }}</div>
-      <img v-else :src="`/icons/flood_${i.id}.svg`" class='river-demo'>
+      <div v-if='i.img_text !== undefined' class='river-demo'>{{ i.img_text }}</div>
+      <img v-else alt='flood_image' :src="`/icons/flood_${i.id}.svg`" class='river-demo'>
       <div class='river-text'>{{ i.text }}</div>
     </div>
   </div>
@@ -44,6 +44,9 @@ export default {
 
 <!--suppress CssUnusedSymbol -->
 <style scoped>
+.flood-legends {
+  user-select: none;
+}
 .legend-title {
   text-align: center;
   margin-top: 5px;
@@ -55,6 +58,7 @@ export default {
   width: 300px;
   height: 55px;
   padding: 10px 5px 5px 20px;
+  align-items: center;
 }
 .river-demo {
   width: 30%;
@@ -63,8 +67,5 @@ export default {
 .river-text {
   width: 75%;
   line-height: 40px;
-}
-.river-text-demo {
-  line-height: 35px;
 }
 </style>

@@ -1,7 +1,7 @@
 import webpack from 'webpack'
 
 const coreVersion = "0.1.0"
-const version = "1.0.0"
+const version = "1.0.1"
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -63,5 +63,17 @@ export default {
         entryOnly: true
       }));
     }
+  },
+  messages: {
+    loading: '加载中...',
+    error_404: '未找到此页面',
+    server_error: '服务器错误',
+    nuxtjs: 'Nuxt.js / mighty-nuxt-core',
+    back_to_home: '回到主页',
+    server_error_details:
+      '遇到了一个致命的服务器错误，导致您的页面无法被渲染。请稍后再试。',
+    client_error: '错误',
+    client_error_details:
+      '在渲染页面时遇到了一个客户端错误。请稍后再试。'
   }
 }

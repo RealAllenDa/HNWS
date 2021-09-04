@@ -5,7 +5,9 @@ export const state = () => ({
   riverGeoJson: {},
   mapBounds: null,
   riverAnnotations: {},
-  floodState: {}
+  floodState: {},
+  lastGetInfoTime: "",
+  displayAllRivers: true
 })
 export const mutations = {
   setShanghaiGeoJson(state, content) {
@@ -22,6 +24,12 @@ export const mutations = {
   },
   setFloodState(state, content) {
     state.floodState = content
+  },
+  setGetInfoTime(state, content) {
+    state.lastGetInfoTime = content
+  },
+  setDisplayAllRivers(state, content) {
+    state.displayAllRivers = content
   }
 }
 export const getters = {
@@ -39,6 +47,12 @@ export const getters = {
   },
   getFloodState(state) {
     return state.floodState
+  },
+  getGetInfoTime(state) {
+    return state.lastGetInfoTime
+  },
+  getDisplayType(state) {
+    return state.displayAllRivers
   }
 }
 export const actions = {
@@ -46,23 +60,22 @@ export const actions = {
     return await dispatch('initializeData')
   },
   async initializeData({ commit }) {
-    // TODO: Remove t=
     const shanghaiGeoData = await this.$axios.get(
-      'https://earthquake.daziannetwork.com/api/HNWS/general/around_shanghai.geojson'
+      `${logger.apiUrl}/assets/generic/around_shanghai_geojson`
     ).catch((error) => {
       console.log("Error:", error);
     })
     commit('setShanghaiGeoJson', shanghaiGeoData.data)
 
     const riverGeoData = await this.$axios.get(
-      'https://earthquake.daziannetwork.com/api/HNWS/river/rivers.geojson'
+      `${logger.apiUrl}/assets/flood/river_geojson`
     ).catch((error) => {
       console.log("Error:", error);
     })
     commit('setRiverGeoJson', riverGeoData.data)
 
     const riverAnnotationData = await this.$axios.get(
-      'https://earthquake.daziannetwork.com/api/HNWS/river/river_annotations.json'
+      `${logger.apiUrl}/assets/flood/river_annotations`
     ).catch((error) => {
       console.log("Error:", error);
     })

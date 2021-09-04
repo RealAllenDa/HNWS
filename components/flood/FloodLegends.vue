@@ -42,6 +42,9 @@ export default {
 
 <!--suppress CssUnusedSymbol -->
 <style scoped>
+.flood-legends {
+  user-select: none;
+}
 .legend-title {
   text-align: center;
   margin-top: 5px;

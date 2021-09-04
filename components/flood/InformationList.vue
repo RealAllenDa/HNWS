@@ -6,8 +6,15 @@
 </template>
 
 <script>
+import Information from '@/components/flood/Information'
+import Thumbnail from '@/components/Thumbnail'
+
 export default {
   name: 'InformationList',
+  components: {
+    Information,
+    Thumbnail
+  },
   props: {
     parseType: {
       type: String,
@@ -20,7 +27,7 @@ export default {
 <style scoped>
 .information-container {
   width: 420px;
-  height: 1076px;
+  height: 1080px;
   display: flex;
   flex-direction: column;
 }

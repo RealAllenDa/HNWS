@@ -15,8 +15,8 @@
   color: inherit;
 }
 body {
-  margin: 0 !important;
-  padding: 0 !important;
+  margin: 0;
+  padding: 0;
   color: white !important;
   background: var(--background-color) !important;
 }
@@ -30,6 +30,9 @@ body {
   border: none !important;
   box-shadow: none !important;
   padding: 3px !important;
+}
+.river-annotation:before {
+  border-top: none !important;
 }
 .leaflet-tooltip-top:before {
   border-top: none;

@@ -37,7 +37,9 @@ export default {
         zoomControl: false,
         attributionControl: false,
         dragging: false,
-        doubleClickZoom: false
+        doubleClickZoom: false,
+        scrollWheelZoom: false,
+        touchZoom: false
       },
       geoJsonStyle: {
         style: {
