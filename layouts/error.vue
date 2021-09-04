@@ -1,10 +1,9 @@
 <template>
-  <div>
+  <div class='main-container'>
     <div class='error-container'>
-      <img src='/icons/error.svg' class='error-icon'>
       <span class='main-title'>我们很抱歉，但发生了错误。</span>
       <b-link href='https://www.daziannetwork.com'
-              style='font-size: 35px;'>回到首页</b-link>
+              style='font-size: 35px; user-select: none'>回到首页</b-link>
     </div>
     <div class='splitter'></div>
     <div>
@@ -38,7 +37,7 @@ export default {
   },
   head () {
     return {
-      title: "错误 - HNWS"
+      title: "错误 - 家庭网络"
     }
   },
   mounted() {
@@ -46,14 +45,10 @@ export default {
   }
 }
 </script>
-<style>
-@import "../assets/colors.css";
-html {
-  background: var(--background-color);
+<style scoped>
+.main-container {
   margin: 10px;
 }
-</style>
-<style scoped>
 .error-container {
   display: flex;
   align-items: center;
@@ -63,12 +58,6 @@ html {
   font-size: 35px;
   font-weight: bold;
   user-select: none;
-  margin-left: 20px;
-}
-.error-icon {
-  width: 60px;
-  user-select: none;
-  height: 60px;
 }
 .splitter {
   margin-top: 1rem;

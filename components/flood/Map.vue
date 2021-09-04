@@ -5,8 +5,9 @@
              style='background: #a4a8ab'
              :options='options'
              :center='center'
-             :zoom='10.5'
+             :zoom='10.12'
              @update:bounds='updateBounds'
+             @update:center='updateCenter'
              @ready='ready'
       >
         <l-geo-json
@@ -57,12 +58,12 @@ export default {
       riverAnnotations: this.$store.getters.getRiverAnnotation,
       floodState: this.$store.getters.getFloodState,
       center: {
-        "lat": 31.189081341481803,
-        "lng": 121.24952857536623
+        "lat": 31.18930843952816,
+        "lng": 121.05972290039064
       },
       options: {
         zoomSnap: 0.01,
-        zoomDelta: 0.5,
+        zoomDelta: 0.01,
         zoomControl: false,
         attributionControl: false,
       },
@@ -107,6 +108,9 @@ export default {
     }
   },
   methods: {
+    updateCenter(d) {
+      console.log(d)
+    },
     updateBounds(bounds) {
       this.$store.commit("setMapBounds", bounds);
     },
@@ -116,7 +120,6 @@ export default {
     },
     getStyle(feature) {
       let color = "#808080";
-      if (feature.properties.important) {
         switch (this.riverState[feature.properties.name]) {
           case 0:
             color = "dodgerblue";
@@ -134,11 +137,9 @@ export default {
             color = "#111111";
             break;
         }
-      }
       return {
         color,
         weight: feature.properties.important ? 10 : 2,
-        dashArray: "1, 1",
         className: feature.properties.important ? "important-rivers" : ""
       }
     },
@@ -152,23 +153,52 @@ export default {
       for (const i in this.floodState.flood) {
         let maximumLevelPerRiver = 0;
         for (const j in this.floodState.flood[i]) {
+          if (j === "important") {continue;}
           const stationCurrentState = this.floodState.flood[i][j];
-          const stationLongitude = this.floodState.station[j].longitude;
-          const stationLatitude = this.floodState.station[j].latitude;
           if (stationCurrentState === 0) {continue;}
           if (stationCurrentState > maximumLevelPerRiver) {
             maximumLevelPerRiver = stationCurrentState;
           }
-          const stationIcon = this.CORRESPOND_ICONS[stationCurrentState];
-          this.stationMarkers.push({
-            id: j,
-            icon: stationIcon,
-            lng_lat: [stationLatitude, stationLongitude]
-          })
         }
         this.riverState[i] = maximumLevelPerRiver
       }
+      for (const i in this.floodState.station) {
+        const stationCurrentState = this.parseWarningState(
+          this.floodState.station[i]
+        );
+        if (stationCurrentState === 0) {continue;}
+        const stationLongitude = this.floodState.station[i].longitude;
+        const stationLatitude = this.floodState.station[i].latitude;
+        const stationIcon = this.CORRESPOND_ICONS[stationCurrentState];
+        this.stationMarkers.push({
+          id: i,
+          icon: stationIcon,
+          lng_lat: [stationLatitude, stationLongitude]
+        })
+      }
       this.$refs.riverGeoJsonInstance.setOptionsStyle(this.getStyle)
+    },
+    parseWarningState(station) {
+      const currentLevel = station.current_level;
+      if (station.levee_crown !== null) {
+        if (currentLevel >= station.levee_crown) {
+          return 4;
+        }
+      }
+      if (station.danger_level !== null) {
+        if (currentLevel >= station.danger_level) {
+          return 3;
+        }
+      }
+      if (station.warning_level !== null) {
+        if (currentLevel >= station.warning_level) {
+          return 2;
+        }
+        if (currentLevel >= station.warning_level-0.25) {
+          return 1;
+        }
+      }
+      return 0;
     }
   }
 }
@@ -177,6 +207,6 @@ export default {
 <style scoped>
 .map-container {
   width: 1500px;
-  height: 1076px;
+  height: 1080px;
 }
 </style>

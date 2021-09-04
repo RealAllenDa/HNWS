@@ -36,6 +36,7 @@ export default {
   data () {
     return {
       floodState: this.$store.getters.getFloodState,
+      displayAllRivers: this.$store.getters.getDisplayType,
       riverState: {
         0: [],
         1: [],
@@ -44,6 +45,7 @@ export default {
         4: []
       },
       stationState: {
+        0: [],
         1: [],
         2: [],
         3: [],
@@ -91,6 +93,10 @@ export default {
     "$store.state.floodState" () {
       this.floodState = this.$store.getters.getFloodState
       this.initializeInformation()
+    },
+    "$store.state.displayAllRivers" () {
+      this.displayAllRivers = this.$store.getters.getDisplayType
+      this.parseFloodRivers()
     }
   },
   mounted() {
@@ -114,7 +120,12 @@ export default {
       }
       for (const i in this.floodState.flood) {
         let maximumLevelPerRiver = 0;
+        if (!this.floodState.flood[i].important &&
+            this.displayAllRivers) {
+          continue;
+        }
         for (const j in this.floodState.flood[i]) {
+          if (j === "important") {continue;}
           const stationCurrentState = this.floodState.flood[i][j];
           if (stationCurrentState === 0) {continue;}
           if (stationCurrentState > maximumLevelPerRiver) {
@@ -125,23 +136,47 @@ export default {
       }
       // eslint-disable-next-line no-console
       console.log("River State: ", this.riverState)
+      console.log("Raw data: ", this.floodState)
     },
     parseFloodStations() {
       this.stationState = {
+        0: [],
         1: [],
         2: [],
         3: [],
         4: []
       }
-      for (const i in this.floodState.flood) {
-        for (const j in this.floodState.flood[i]) {
-          const stationCurrentState = this.floodState.flood[i][j];
-          if (stationCurrentState === 0) {continue;}
-          this.stationState[stationCurrentState].push(j);
-        }
+      for (const i in this.floodState.station) {
+          const stationCurrentState = this.parseWarningState(
+            this.floodState.station[i]
+          );
+          this.stationState[stationCurrentState].push(i);
       }
       // eslint-disable-next-line no-console
       console.log("Station State: ", this.stationState)
+      console.log("Raw data: ", this.floodState)
+    },
+    parseWarningState(station) {
+      const currentLevel = station.current_level;
+      if (station.levee_crown !== null) {
+        if (currentLevel >= station.levee_crown) {
+          return 4;
+        }
+      }
+      if (station.danger_level !== null) {
+        if (currentLevel >= station.danger_level) {
+          return 3;
+        }
+      }
+      if (station.warning_level !== null) {
+        if (currentLevel >= station.warning_level) {
+          return 2;
+        }
+        if (currentLevel >= station.warning_level-0.25) {
+          return 1;
+        }
+      }
+      return 0;
     }
   }
 }
@@ -163,6 +198,7 @@ export default {
   font-size: 25px;
   font-weight: bold;
   margin-top: 20px;
+  line-height: 45px;
 }
 .state-text-container {
   width: 380px;

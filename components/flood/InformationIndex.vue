@@ -5,8 +5,6 @@
       <span class='secondary-title'>{{ englishTitle }}</span>
       <span class='secondary-title' style='margin-top: 5px'>{{ date }} 更新</span>
     </div>
-    <div class='time-container' style='color: black'>
-    </div>
   </div>
 </template>
 
@@ -26,6 +24,7 @@ export default {
   data() {
     return {
       date: "",
+      dateFormat: null,
       floodState: this.$store.getters.getFloodState
     }
   },
@@ -40,7 +39,7 @@ export default {
   },
   methods: {
     parseInfoTime() {
-      this.date = Intl.DateTimeFormat(undefined, {
+      this.dateFormat = Intl.DateTimeFormat(undefined, {
         hour12: false,
         year: 'numeric',
         month: '2-digit',
@@ -48,7 +47,10 @@ export default {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit'
-      }).format(new Date().setTime(this.floodState.timestamp*1000))
+      })
+      this.date = this.dateFormat.format(new Date().setTime(this.floodState.timestamp*1000))
+      this.$store.commit("setGetInfoTime",
+        this.dateFormat.formatToParts(new Date().setTime(this.floodState.timestamp*1000)))
     }
   }
 }
@@ -75,12 +77,5 @@ export default {
 .secondary-title {
   font-size: 30px;
   display: block;
-}
-
-.time-container {
-  font-size: 30px;
-  margin-left: 25px;
-  margin-top: 5px;
-  user-select: none;
 }
 </style>

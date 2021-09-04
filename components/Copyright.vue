@@ -28,8 +28,9 @@ export default {
   height: 25px;
   position: absolute;
   z-index: 99999999;
-  top: 1045px;
+  top: 1050px;
   left: 10px;
   font-size: 20px;
+  user-select: none;
 }
 </style>
