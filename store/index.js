@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import logger from 'assets/logger'
 
 export const state = () => ({
@@ -7,7 +8,8 @@ export const state = () => ({
   riverAnnotations: {},
   floodState: {},
   lastGetInfoTime: "",
-  displayAllRivers: true
+  displayAllRivers: true,
+  rainState: {}
 })
 export const mutations = {
   setShanghaiGeoJson(state, content) {
@@ -30,6 +32,9 @@ export const mutations = {
   },
   setDisplayAllRivers(state, content) {
     state.displayAllRivers = content
+  },
+  setRainState(state, content) {
+    state.rainState = content
   }
 }
 export const getters = {
@@ -53,11 +58,22 @@ export const getters = {
   },
   getDisplayType(state) {
     return state.displayAllRivers
+  },
+  getRainState(state) {
+    return state.rainState
   }
 }
 export const actions = {
-  async nuxtServerInit({ dispatch }, { req }) {
-    return await dispatch('initializeData')
+  async nuxtServerInit({ dispatch }, { route }) {
+    await dispatch('initializeData')
+    if (route.name === "flood-rivers" ||
+        route.name === "flood-stations") {
+      return await dispatch('initializeFloodData')
+    } else if (route.name === "rain") {
+      return await dispatch('initializeRainData')
+    } else {
+      throw new Error("Failed to determine the route.")
+    }
   },
   async initializeData({ commit }) {
     const shanghaiGeoData = await this.$axios.get(
@@ -66,7 +82,16 @@ export const actions = {
       console.log("Error:", error);
     })
     commit('setShanghaiGeoJson', shanghaiGeoData.data)
-
+  },
+  async initializeRainData({ commit }) {
+    const rainState = await this.$axios.get(
+      `${logger.apiUrl}/warning/rain_state`
+    ).catch((error) => {
+      console.log("Error:", error);
+    })
+    commit('setRainState', rainState.data)
+  },
+  async initializeFloodData({ commit }) {
     const riverGeoData = await this.$axios.get(
       `${logger.apiUrl}/assets/flood/river_geojson`
     ).catch((error) => {

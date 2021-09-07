@@ -16,7 +16,7 @@
     <div class='screenshot-container'>
       <b-button variant='primary' @click='screenShot'>下载图片</b-button>
       <b-dropdown text="显示类型" variant='primary'
-                  style='margin-left: 20px; z-index: 9999999999'>
+                  class='dropdown-screenshot'>
         <b-dropdown-item
           v-if='!displayAllRivers' href="#"
           @click='changeToAll'>指定河川</b-dropdown-item>
@@ -114,7 +114,6 @@ export default {
       this.englishTitle = this.$store.getters.getDisplayType ?
         'Flood Forecast For Designated Rivers' :
         'Flood Forecast For All Rivers'
-      console.log("Display All Rivers:", !this.displayAllRivers)
     },
     changeToDesignated() {
       this.$store.commit("setDisplayAllRivers", false)
@@ -125,7 +124,6 @@ export default {
       this.englishTitle = this.$store.getters.getDisplayType ?
         'Flood Forecast For Designated Rivers' :
         'Flood Forecast For All Rivers'
-      console.log("Display All Rivers:", !this.displayAllRivers)
     }
   }
 }

@@ -7,6 +7,13 @@
   --flood-warning-color: #FF3E1A;
   --flood-danger-color: #B31AB1;
   --flood-occur-color: #111111;
+
+  --rain-little-color: #64bfed;
+  --rain-medium-color: #faf61a;
+  --rain-big-color: #fe9f0f;
+  --rain-heavy-color: #ff3e1a;
+  --rain-downpour-color: #b31ab1;
+  --rain-torrential-color: #111111;
   -webkit-font-smoothing: antialiased;
   font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif;
 }
@@ -38,9 +45,7 @@ body {
   border-top: none;
   margin-bottom: 0;
 }
-.flood-legends {
-  width: 300px;
-  height: 350px;
+.general-legends {
   display: flex;
   background: var(--information-background);
   opacity: 0.8;
@@ -48,8 +53,54 @@ body {
   pointer-events: none;
   flex-direction: column;
   position: absolute;
-  top: 695px;
-  left: 1180px;
   text-align: center;
   font-size: 30px;
+
+}
+.flood-legends {
+  width: 300px;
+  height: 350px;
+  top: 695px;
+  left: 1180px;
+}
+.rain-legends {
+  width: 300px;
+  height: 460px;
+  top: 585px;
+  left: 1180px;
+}
+.information {
+  width: 420px;
+  height: 690px;
+  background: var(--information-background);
+  padding: 0 20px 20px;
+  user-select: none;
+}
+.state {
+  width: 380px;
+  height: 50px;
+  padding: 3px 5px 5px 10px;
+  font-size: 25px;
+  font-weight: bold;
+  margin-top: 20px;
+  line-height: 45px;
+}
+.state-text-container {
+  width: 380px;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  font-size: 23px;
+}
+.state-text {
+  width: 33%;
+}
+.more {
+  color: yellow;
+  font-weight: bold;
+}
+.dropdown-screenshot {
+  margin-left: 20px;
+  z-index: 9999999999;
 }
