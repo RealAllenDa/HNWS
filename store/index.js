@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import logger from 'assets/logger'
 
 export const state = () => ({
@@ -7,7 +8,8 @@ export const state = () => ({
   riverAnnotations: {},
   floodState: {},
   lastGetInfoTime: "",
-  displayAllRivers: true
+  displayAllRivers: true,
+  rainState: {}
 })
 export const mutations = {
   setShanghaiGeoJson(state, content) {
@@ -30,6 +32,9 @@ export const mutations = {
   },
   setDisplayAllRivers(state, content) {
     state.displayAllRivers = content
+  },
+  setRainState(state, content) {
+    state.rainState = content
   }
 }
 export const getters = {
@@ -53,10 +58,19 @@ export const getters = {
   },
   getDisplayType(state) {
     return state.displayAllRivers
+  },
+  getRainState(state) {
+    return state.rainState
   }
 }
 export const actions = {
-  async nuxtServerInit({ dispatch }, { req }) {
+  async nuxtServerInit({ dispatch }, { route }) {
+    if (route.name === "flood-rivers" ||
+      route.name === "flood-stations") {
+      await dispatch('initializeFloodData')
+    } else if (route.name === "rain") {
+      await dispatch('initializeRainData')
+    }
     return await dispatch('initializeData')
   },
   async initializeData({ commit }) {
@@ -66,7 +80,16 @@ export const actions = {
       console.log("Error:", error);
     })
     commit('setShanghaiGeoJson', shanghaiGeoData.data)
-
+  },
+  async initializeRainData({ commit }) {
+    const rainState = await this.$axios.get(
+      `${logger.apiUrl}/warning/rain_state`
+    ).catch((error) => {
+      console.log("Error:", error);
+    })
+    commit('setRainState', rainState.data)
+  },
+  async initializeFloodData({ commit }) {
     const riverGeoData = await this.$axios.get(
       `${logger.apiUrl}/assets/flood/river_geojson`
     ).catch((error) => {

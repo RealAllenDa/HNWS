@@ -1,7 +1,7 @@
 import webpack from 'webpack'
 
 const coreVersion = "0.1.0"
-const version = "1.0.1"
+const version = "1.0.2"
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head

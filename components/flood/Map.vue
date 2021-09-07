@@ -7,7 +7,6 @@
              :center='center'
              :zoom='10.12'
              @update:bounds='updateBounds'
-             @update:center='updateCenter'
              @ready='ready'
       >
         <l-geo-json
@@ -101,16 +100,11 @@ export default {
   },
   watch: {
     "$store.state.floodState" () {
-      // eslint-disable-next-line no-console
-      console.log("Updating...")
       this.floodState = this.$store.getters.getFloodState
       this.parseFloodState()
     }
   },
   methods: {
-    updateCenter(d) {
-      console.log(d)
-    },
     updateBounds(bounds) {
       this.$store.commit("setMapBounds", bounds);
     },

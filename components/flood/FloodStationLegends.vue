@@ -1,5 +1,5 @@
 <template>
-  <div class='flood-legends'>
+  <div class='general-legends flood-legends'>
     <div class='legend-title'>图例</div>
     <div v-for='i in floodLegends' :key='i.id' class='flood-legend-item'>
       <div v-if='i.img_text !== undefined' class='river-demo'>{{ i.img_text }}</div>
