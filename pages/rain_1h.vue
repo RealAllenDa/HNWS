@@ -40,6 +40,7 @@ import InformationIndex from '@/components/rain/InformationIndex'
 import Map from '@/components/rain/Map'
 import RainLegends from "@/components/rain/RainLegends"
 import InformationList from '@/components/rain/InformationList'
+import NoInformation from '@/components/NoInformation'
 
 export default {
   name: 'FloodStations',
@@ -47,17 +48,18 @@ export default {
     InformationIndex,
     Map,
     RainLegends,
-    InformationList
+    InformationList,
+    NoInformation
   },
   data() {
     return {
       selectedType: "areaLevels",
       chineseTitle: this.selectedType !== "areaLevels" ?
-                      '24小时区域降水量一览' :
-                      '24小时站点降水量一览',
+                      '1小时区域降水量一览' :
+                      '1小时站点降水量一览',
       englishTitle: this.selectedType !== "areaLevels" ?
-                    '24H Precipitation Nowcasts for Districts' :
-                    '24H Precipitation Nowcasts for Stations',
+                    '1H Precipitation Nowcasts for Districts' :
+                    '1H Precipitation Nowcasts for Stations',
       timer: null
     }
   },
@@ -76,7 +78,7 @@ export default {
   methods: {
     async fetchRainState() {
       const rainState = await axios.get(
-        `${logger.apiUrl}/warning/rain_state`
+        `${logger.apiUrl}/warning/rain_state_1h`
       ).catch((error) => {
         // eslint-disable-next-line no-console
         console.warn('Error:', error)
@@ -91,27 +93,27 @@ export default {
     changeToArea() {
       this.selectedType = "areaLevels"
       this.chineseTitle = this.selectedType === "areaLevels" ?
-        '24小时区域降水量一览' :
-        '24小时站点降水量一览'
+        '1小时区域降水量一览' :
+        '1小时站点降水量一览'
        this.englishTitle = this.selectedType === "areaLevels" ?
-        '24H Precipitation Nowcasts for Districts' :
-        '24H Precipitation Nowcasts for Stations'
+        '1H Precipitation Nowcasts for Districts' :
+        '1H Precipitation Nowcasts for Stations'
     },
     changeToStation() {
       this.selectedType = "stationLevels"
       this.chineseTitle = this.selectedType === "areaLevels" ?
-        '24小时区域降水量一览' :
-        '24小时站点降水量一览'
+        '1小时区域降水量一览' :
+        '1小时站点降水量一览'
       this.englishTitle = this.selectedType === "areaLevels" ?
-        '24H Precipitation Nowcasts for Districts' :
-        '24H Precipitation Nowcasts for Stations'
+        '1H Precipitation Nowcasts for Districts' :
+        '1H Precipitation Nowcasts for Stations'
     },
     screenShot() {
       htmlToImage.toSvg(document.getElementById("main-container"))
         .then(data => {
           // Filename like HNWS_Flood_Stations_YYYY_MM_DD_HH_MM_SS.png
           const infoTime = this.$store.getters.getGetInfoTime
-          const filename = `HNWS_24H_Rain_${this.selectedType}_` +
+          const filename = `HNWS_1H_Rain_${this.selectedType}_` +
             `${infoTime[0].value}_${infoTime[2].value}_${infoTime[4].value}_` +
             `${infoTime[6].value}_${infoTime[8].value}_${infoTime[10].value}.png`
           SVGToPNG.download(data, filename)

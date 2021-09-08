@@ -70,6 +70,8 @@ export const actions = {
       await dispatch('initializeFloodData')
     } else if (route.name === "rain") {
       await dispatch('initializeRainData')
+    } else if (route.name === "rain_1h") {
+      await dispatch('initializeRain1HData')
     }
     return await dispatch('initializeData')
   },
@@ -84,6 +86,14 @@ export const actions = {
   async initializeRainData({ commit }) {
     const rainState = await this.$axios.get(
       `${logger.apiUrl}/warning/rain_state`
+    ).catch((error) => {
+      console.log("Error:", error);
+    })
+    commit('setRainState', rainState.data)
+  },
+  async initializeRain1HData({ commit }) {
+    const rainState = await this.$axios.get(
+      `${logger.apiUrl}/warning/rain_state_1h`
     ).catch((error) => {
       console.log("Error:", error);
     })
