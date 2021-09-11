@@ -104,3 +104,8 @@ body {
   margin-left: 20px;
   z-index: 9999999999;
 }
+.current-alarm-title {
+  font-size: 25px;
+  font-weight: bold;
+  margin-top: 20px;
+}

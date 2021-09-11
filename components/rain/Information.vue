@@ -1,7 +1,7 @@
 <template>
   <div class='information'>
     <div v-if='parseType==="areaLevels"'>
-      <div v-for='(i, j) in WARNING_LEVEL_RAIN' :key='j'>
+      <div v-for='(i, j) in SPECIFIED_WARNING_LEVEL' :key='j'>
         <div v-if='areaState[j].length !== 0'>
           <div class='state' :class='i.id'>{{ i.name }}</div>
           <div class='state-text-container'>
@@ -16,7 +16,7 @@
       </div>
     </div>
     <div v-else-if='parseType==="stationLevels"'>
-      <div v-for='(i, j) in WARNING_LEVEL_RAIN' :key='j'>
+      <div v-for='(i, j) in SPECIFIED_WARNING_LEVEL' :key='j'>
         <div v-if='stationState[j].length !== 0'>
           <div class='state' :class='i.id'>{{ i.name }}</div>
           <div class='state-text-container'>
@@ -39,6 +39,10 @@ export default {
   name: 'Information',
   props: {
     parseType: {
+      type: String,
+      required: true
+    },
+    displayType: {
       type: String,
       required: true
     }
@@ -64,6 +68,7 @@ export default {
         5: [],
         6: []
       },
+      SPECIFIED_WARNING_LEVEL: {},
       WARNING_LEVEL_RAIN: {
         6: {
           'id': 'torrential',
@@ -89,6 +94,32 @@ export default {
           'id': 'little',
           'name': '小雨级'
         }
+      },
+      WARNING_LEVEL_PERIOD: {
+        6: {
+          'id': 'torrential',
+          'name': '大于100年一遇'
+        },
+        5: {
+          'id': 'downpour',
+          'name': '70-90年一遇'
+        },
+        4: {
+          'id': 'heavy',
+          'name': '50-70年一遇'
+        },
+        3: {
+          'id': 'big',
+          'name': '30-50年一遇'
+        },
+        2: {
+          'id': 'medium',
+          'name': '10-30年一遇'
+        },
+        1: {
+          'id': 'little',
+          'name': '1-10年一遇'
+        }
       }
     }
   },
@@ -106,12 +137,32 @@ export default {
   },
   methods: {
     initializeInformation() {
-      if (this.parseType === 'areaLevels') {
-        this.parseRainAreas()
-      } else if (this.parseType === 'stationLevels') {
-        this.parseRainStations()
+      if (this.displayType === "rainLevel") {
+        this.SPECIFIED_WARNING_LEVEL = this.WARNING_LEVEL_RAIN
+        if (this.parseType === 'areaLevels') {
+          this.parseRainAreas()
+        } else if (this.parseType === 'stationLevels') {
+          this.parseRainStations()
+        } else {
+          // eslint-disable-next-line no-console
+          console.warn('Failed to determine display type. ' +
+            `(Type=${this.parseType})`)
+        }
+      } else if (this.displayType === "rainPeriod") {
+        this.SPECIFIED_WARNING_LEVEL = this.WARNING_LEVEL_PERIOD
+        if (this.parseType === 'areaLevels') {
+          this.parsePeriodAreas()
+        } else if (this.parseType === 'stationLevels') {
+          this.parsePeriodStations()
+        } else {
+          // eslint-disable-next-line no-console
+          console.warn('Failed to determine display type. ' +
+            `(Type=${this.parseType})`)
+        }
       } else {
-        throw new Error('Failed to determine display type.')
+        // eslint-disable-next-line no-console
+        console.warn("Failed to display information, " +
+          `because the type isn't specified. (Type=${this.type})`)
       }
     },
     parseRainAreas() {
@@ -150,6 +201,45 @@ export default {
             return;
           }
           this.stationState[content.level].push(content.name)
+        }
+      })
+    },
+    parsePeriodAreas() {
+      this.areaState = {
+        0: [],
+        1: [],
+        2: [],
+        3: [],
+        4: [],
+        5: [],
+        6: []
+      }
+      this.rainState.rain.forEach((content) => {
+        if (!this.areaState[content.period].includes(content.area)) {
+          this.areaState[content.period].push(content.area)
+        }
+      })
+    },
+    parsePeriodStations() {
+      this.stationState = {
+        0: [],
+        1: [],
+        2: [],
+        3: [],
+        4: [],
+        5: [],
+        6: []
+      }
+      this.rainState.rain.forEach((content) => {
+        if (!this.stationState[content.period].includes(content.name)) {
+          if (this.stationState[content.period].length > 9) {
+            return;
+          }
+          if (this.stationState[content.period].length > 8) {
+            this.stationState[content.period][8] = "more"
+            return;
+          }
+          this.stationState[content.period].push(content.name)
         }
       })
     }

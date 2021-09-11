@@ -6,20 +6,23 @@
         :chinese-title='chineseTitle'
         :english-title='englishTitle'
       ></InformationIndex>
-      <RainLegends></RainLegends>
+      <RainLegends :type='displayType'></RainLegends>
       <Copyright></Copyright>
       <div style='display: flex;'>
-        <Map></Map>
-        <InformationList :parse-type='selectedType'></InformationList>
+        <Map :type='displayType'></Map>
+        <InformationList
+          :parse-type='selectedType'
+          :display-type='displayType'
+        ></InformationList>
       </div>
     </div>
     <div class='screenshot-container'>
       <b-button variant='primary' @click='screenShot'>下载图片</b-button>
       <b-dropdown text="显示类型" class="dropdown-screenshot"
-      variant='primary'>
+                  variant='primary'>
         <b-dropdown-item v-if='selectedType==="areaLevels"'
-          active href="#"
-          @click='changeToArea'>区域</b-dropdown-item>
+                         active href="#"
+                         @click='changeToArea'>区域</b-dropdown-item>
         <b-dropdown-item v-else href="#"
                          @click='changeToArea'>区域</b-dropdown-item>
         <b-dropdown-item v-if='selectedType==="stationLevels"' active href="#"
@@ -42,7 +45,7 @@ import RainLegends from "@/components/rain/RainLegends"
 import InformationList from '@/components/rain/InformationList'
 
 export default {
-  name: 'FloodStations',
+  name: 'RainPeriod',
   components: {
     InformationIndex,
     Map,
@@ -53,12 +56,13 @@ export default {
     return {
       selectedType: "areaLevels",
       chineseTitle: this.selectedType !== "areaLevels" ?
-                      '24小时区域降水量一览' :
-                      '24小时站点降水量一览',
+        '1小时区域降水量重现期' :
+        '1小时站点降水量重现期',
       englishTitle: this.selectedType !== "areaLevels" ?
-                    '24H Precipitation Nowcasts for Districts' :
-                    '24H Precipitation Nowcasts for Stations',
-      timer: null
+        '1H Rainfall Return Period for Districts' :
+        '1H Rainfall Return Period for Stations',
+      timer: null,
+      displayType: "rainPeriod"
     }
   },
   head() {
@@ -76,7 +80,7 @@ export default {
   methods: {
     async fetchRainState() {
       const rainState = await axios.get(
-        `${logger.apiUrl}/warning/rain_state`
+        `${logger.apiUrl}/warning/rain_state_1h`
       ).catch((error) => {
         // eslint-disable-next-line no-console
         console.warn('Error:', error)
@@ -91,27 +95,27 @@ export default {
     changeToArea() {
       this.selectedType = "areaLevels"
       this.chineseTitle = this.selectedType === "areaLevels" ?
-        '24小时区域降水量一览' :
-        '24小时站点降水量一览'
-       this.englishTitle = this.selectedType === "areaLevels" ?
-        '24H Precipitation Nowcasts for Districts' :
-        '24H Precipitation Nowcasts for Stations'
+        '1小时区域降水量重现期' :
+        '1小时站点降水量重现期'
+      this.englishTitle = this.selectedType === "areaLevels" ?
+        '1H Rainfall Return Period for Districts' :
+        '1H Rainfall Return Period for Stations'
     },
     changeToStation() {
       this.selectedType = "stationLevels"
       this.chineseTitle = this.selectedType === "areaLevels" ?
-        '24小时区域降水量一览' :
-        '24小时站点降水量一览'
+        '1小时区域降水量重现期' :
+        '1小时站点降水量重现期'
       this.englishTitle = this.selectedType === "areaLevels" ?
-        '24H Precipitation Nowcasts for Districts' :
-        '24H Precipitation Nowcasts for Stations'
+        '1H Rainfall Return Period for Districts' :
+        '1H Rainfall Return Period for Stations'
     },
     screenShot() {
       htmlToImage.toSvg(document.getElementById("main-container"))
         .then(data => {
           // Filename like HNWS_Flood_Stations_YYYY_MM_DD_HH_MM_SS.png
           const infoTime = this.$store.getters.getGetInfoTime
-          const filename = `HNWS_24H_Rain_${this.selectedType}_` +
+          const filename = `HNWS_Period_Rain_${this.selectedType}_` +
             `${infoTime[0].value}_${infoTime[2].value}_${infoTime[4].value}_` +
             `${infoTime[6].value}_${infoTime[8].value}_${infoTime[10].value}.png`
           SVGToPNG.download(data, filename)
@@ -121,7 +125,7 @@ export default {
 }
 </script>
 <style>
-@import "../assets/colors.css";
+@import "../../assets/colors.css";
 </style>
 <style scoped>
 .main-container {

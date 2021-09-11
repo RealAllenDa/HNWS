@@ -1,6 +1,9 @@
 <template>
   <div class='information-container'>
-    <Information :parse-type='parseType'></Information>
+    <Information
+      :parse-type='parseType'
+      :display-type='displayType'
+    ></Information>
   </div>
 </template>
 
@@ -14,6 +17,10 @@ export default {
   },
   props: {
     parseType: {
+      type: String,
+      required: true
+    },
+    displayType: {
       type: String,
       required: true
     }

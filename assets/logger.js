@@ -30,8 +30,10 @@ const logger = {
     }
   },
   formatCaller(callerData) {
-    return "[" + callerData.filePath + ":" + callerData.lineNumber + "] " +
-    "[" + callerData.typeName + " " + callerData.functionName + "]";
+    if (process.mode === "development") {
+      return "[" + callerData.filePath + ":" + callerData.lineNumber + "] " +
+        "[" + callerData.typeName + " " + callerData.functionName + "]";
+    }
   },
   debug(...text) {
     if (process.mode === "development") {

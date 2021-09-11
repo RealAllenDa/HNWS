@@ -34,6 +34,12 @@
 <script>
 export default {
   name: 'Map',
+  props: {
+    type: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       shanghaiGeoJson: this.$store.getters.getShanghaiGeoJson,
@@ -70,7 +76,15 @@ export default {
   watch: {
     '$store.state.rainState'() {
       this.rainState = this.$store.getters.getRainState
-      this.parseRainState()
+      if (this.type === "rainLevel") {
+        this.parseRainState()
+      } else if (this.type === "rainPeriod") {
+        this.parseRainPeriod()
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn("Failed to draw the map, " +
+          `because the type isn't specified. (Type=${this.type})`)
+      }
     }
   },
   methods: {
@@ -79,7 +93,15 @@ export default {
     },
     ready(obj) {
       this.$store.commit('setMapBounds', obj.getBounds())
-      this.parseRainState()
+      if (this.type === "rainLevel") {
+        this.parseRainState()
+      } else if (this.type === "rainPeriod") {
+        this.parseRainPeriod()
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn("Failed to draw the map, " +
+          `because the type isn't specified. (Type=${this.type})`)
+      }
     },
     getStyle(feature) {
       let color = "#7f7f7f";
@@ -134,6 +156,32 @@ export default {
           return
         }
         const stationIcon = this.CORRESPOND_ICONS[content.level]
+        this.stationMarkers.push({
+          id: content.id,
+          icon: stationIcon,
+          lng_lat: [content.latitude, content.longitude]
+        })
+      })
+      this.$refs.areaGeoJsonInstance.setOptionsStyle(this.getStyle)
+    },
+    parseRainPeriod() {
+      this.stationMarkers = []
+      this.areaState = {}
+      if (this.rainState === undefined) {
+        // eslint-disable-next-line no-console
+        console.warn('Failed to parse rain state: undefined')
+        return
+      }
+      this.rainState.rain.forEach((content) => {
+        if (this.areaState[content.area] === undefined) {
+          this.areaState[content.area] = content.period
+        } else if (content.period > this.areaState[content.area]) {
+          this.areaState[content.area] = content.period
+        }
+        if (content.period === 0) {
+          return
+        }
+        const stationIcon = this.CORRESPOND_ICONS[content.period]
         this.stationMarkers.push({
           id: content.id,
           icon: stationIcon,
