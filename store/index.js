@@ -12,7 +12,8 @@ export const state = () => ({
   rainState: {},
   floodWarningState: {},
   weatherWarningState: {},
-  windState: {}
+  windState: {},
+  inundationState: {}
 })
 export const mutations = {
   setShanghaiGeoJson(state, content) {
@@ -47,6 +48,9 @@ export const mutations = {
   },
   setWindState(state, content) {
     state.windState = content
+  },
+  setInundationState(state, content) {
+    state.inundationState = content
   },
 }
 export const getters = {
@@ -83,6 +87,9 @@ export const getters = {
   getWindState(state) {
     return state.windState
   },
+  getInundationState(state) {
+    return state.inundationState
+  },
 }
 export const actions = {
   async nuxtServerInit({ dispatch }, { route }) {
@@ -100,6 +107,8 @@ export const actions = {
       await dispatch('initializeWeatherWarningData')
     } else if (route.name === "wind") {
       await dispatch('initializeWindData')
+    } else if (route.name === "inundation") {
+      await dispatch('initializeInundationData')
     } else if (route.name === "index") {
       return
     } else if (route.name !== "null") {
@@ -145,6 +154,14 @@ export const actions = {
       console.log("Error:", error);
     })
     commit('setWindState', windState.data)
+  },
+  async initializeInundationData({ commit }) {
+    const inundationState = await this.$axios.get(
+      `${logger.apiUrl}/warning/inundation_state`
+    ).catch((error) => {
+      console.log("Error:", error);
+    })
+    commit('setInundationState', inundationState.data)
   },
   async initializeRainData({ commit }) {
     const rainState = await this.$axios.get(

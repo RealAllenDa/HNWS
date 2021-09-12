@@ -14,12 +14,18 @@
   --rain-heavy-color: #ff3e1a;
   --rain-downpour-color: #b31ab1;
   --rain-torrential-color: #111111;
+
+  --inundation-little-color: #49B079;
+
   -webkit-font-smoothing: antialiased;
   font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif;
 }
 * ::selection {
   background: #73c9e5;
   color: inherit;
+}
+.tooltip-show {
+  font-size: 22px;
 }
 body {
   margin: 0;
@@ -94,7 +100,7 @@ body {
   font-size: 23px;
 }
 .state-text {
-  width: 33%;
+  margin-left: 30px;
 }
 .more {
   color: yellow;

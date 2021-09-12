@@ -1,18 +1,18 @@
 import webpack from 'webpack'
 
-const coreVersion = "0.1.0"
-const version = "1.0.8"
+const coreVersion = "1.1.0"
+const version = "1.1.1"
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'hazard-warning-system',
+    title: 'HNWS',
     htmlAttrs: {
       lang: 'zh-Hans'
     },
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=0.25' },
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' }
     ],

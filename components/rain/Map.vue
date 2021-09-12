@@ -18,6 +18,10 @@
           v-for='i in stationMarkers'
           :key='i["id"]'>
           <l-marker :lat-lng='i["lng_lat"]'>
+            <l-tooltip :options='{
+              "className": "tooltip-show",
+              "direction": "top"
+            }'>{{ i["text"] }}</l-tooltip>
             <l-icon
               :icon-url="i['icon']"
               :icon-size='[70, 70]'
@@ -159,7 +163,8 @@ export default {
         this.stationMarkers.push({
           id: content.id,
           icon: stationIcon,
-          lng_lat: [content.latitude, content.longitude]
+          lng_lat: [content.latitude, content.longitude],
+          text: `${content.area}-${content.name}: ${content.value}mm，${content.level}级`
         })
       })
       this.$refs.areaGeoJsonInstance.setOptionsStyle(this.getStyle)
@@ -185,7 +190,9 @@ export default {
         this.stationMarkers.push({
           id: content.id,
           icon: stationIcon,
-          lng_lat: [content.latitude, content.longitude]
+          lng_lat: [content.latitude, content.longitude],
+          text: `${content.area}-${content.name}: ${content.value}mm，
+          ${content.level}级，${content.period}级一遇程度`
         })
       })
       this.$refs.areaGeoJsonInstance.setOptionsStyle(this.getStyle)

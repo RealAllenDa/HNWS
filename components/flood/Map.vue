@@ -34,6 +34,10 @@
           v-for='i in stationMarkers'
           :key='i["id"]'>
           <l-marker :lat-lng='i["lng_lat"]'>
+            <l-tooltip :options='{
+              "className": "tooltip-show",
+              "direction": "top"
+            }'>{{ i["text"] }}</l-tooltip>
             <l-icon
               :icon-url="i['icon']"
               :icon-size='[70, 70]'
@@ -167,7 +171,9 @@ export default {
         this.stationMarkers.push({
           id: i,
           icon: stationIcon,
-          lng_lat: [stationLatitude, stationLongitude]
+          lng_lat: [stationLatitude, stationLongitude],
+          text: `${this.floodState.station[i].original_river}-${i}：
+          ${this.floodState.station[i].current_level}m ${stationCurrentState}级`
         })
       }
       this.$refs.riverGeoJsonInstance.setOptionsStyle(this.getStyle)

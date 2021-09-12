@@ -57,12 +57,27 @@ export default {
           return ""
       }
     },
+    parseTextFloodLevel(level) {
+      switch (level) {
+        case 1:
+          return "Ⅳ"
+        case 2:
+          return "Ⅲ"
+        case 3:
+          return "Ⅱ"
+        case 4:
+          return "Ⅰ"
+        default:
+          return ""
+      }
+    },
     initializeInformation() {
       this.warningStates = [];
       if (this.floodWarningState.flood !== 0) {
+        const level = this.parseTextFloodLevel(this.floodWarningState.flood)
         this.warningStates.push({
           "class": this.switchClass(this.floodWarningState.flood),
-          "name": `防汛防台${this.floodWarningState.flood}级应急响应行动`
+          "name": `防汛防台${level}级应急响应行动`
         })
       }
       if (this.floodWarningState.water_level !== 0) {

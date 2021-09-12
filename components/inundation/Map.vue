@@ -5,7 +5,7 @@
              style='background: #a4a8ab'
              :options='options'
              :center='center'
-             :zoom='9.5'
+             :zoom='12'
              @update:bounds='updateBounds'
              @ready='ready'
       >
@@ -26,14 +26,10 @@
               "direction": "top"
             }'>{{ i["text"] }}</l-tooltip>
             <l-icon
+              :icon-url="i['icon']"
               :icon-size='[70, 70]'
               :icon-anchor='[27, 65]'
-            >
-              <img
-                :src="i['icon']"
-                :style='"width:70px;height:70px;transform:rotate("+i["degrees"]+"deg)"'
-              >
-            </l-icon>
+            ></l-icon>
           </l-marker>
         </div>
       </l-map>
@@ -48,10 +44,10 @@ export default {
   data() {
     return {
       shanghaiGeoJson: this.$store.getters.getShanghaiGeoJson,
-      windState: this.$store.getters.getWindState,
+      inundationState: this.$store.getters.getInundationState,
       center: {
-        "lat": 31.381135264471283,
-        "lng": 121.3161145041684
+        "lat": 31.28295208489115,
+        "lng": 121.48544311523439
       },
       options: {
         zoomSnap: 0.01,
@@ -69,19 +65,17 @@ export default {
       stationMarkers: [],
       areaState: {},
       CORRESPOND_ICONS: {
-        0: '/wind_icons/wind_no.svg',
-        1: '/wind_icons/wind_little.svg',
-        2: '/wind_icons/wind_medium.svg',
-        3: '/wind_icons/wind_big.svg',
-        4: '/wind_icons/wind_heavy.svg',
-        5: '/wind_icons/wind_typhoon.svg'
+        1: '/inundation_icons/inundation_little.svg',
+        2: '/inundation_icons/inundation_medium.svg',
+        3: '/inundation_icons/inundation_high.svg',
+        4: '/inundation_icons/inundation_danger.svg'
       }
     }
   },
   watch: {
-    '$store.state.windState'() {
-      this.windState = this.$store.getters.getWindState
-      this.parseWindState()
+    '$store.state.inundationState'() {
+      this.inundationState = this.$store.getters.getInundationState
+      this.parseInundationState()
     }
   },
   methods: {
@@ -90,18 +84,18 @@ export default {
     },
     ready(obj) {
       this.$store.commit('setMapBounds', obj.getBounds())
-      this.parseWindState()
+      this.parseInundationState()
     },
-    parseWindState() {
+    parseInundationState() {
       this.stationMarkers = []
       this.areaState = {}
-      if (this.windState === undefined) {
+      if (this.inundationState === undefined) {
         // eslint-disable-next-line no-console
-        console.warn('Failed to parse wind state: undefined')
+        console.warn('Failed to parse inundation state: undefined')
         return
       }
-      for (const i in this.windState.wind) {
-        this.windState.wind[i].forEach(content => {
+      for (const i in this.inundationState.inundation) {
+        this.inundationState.inundation[i].forEach(content => {
           if (content.level === 0) {
             return
           }
@@ -111,8 +105,8 @@ export default {
             icon: stationIcon,
             lng_lat: [content.latitude, content.longitude],
             level: content.level,
-            degrees: content.degrees,
-            text: `${i}-${content.name}：${content.speed}m/s ${content.wind_level}级 ${content.degrees}度`
+            text:
+              `${i}-${content.name}：${content.water_level}cm，${content.level}级积水`
           })
         })
       }
