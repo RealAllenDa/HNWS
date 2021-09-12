@@ -11,7 +11,8 @@ export const state = () => ({
   displayAllRivers: true,
   rainState: {},
   floodWarningState: {},
-  weatherWarningState: {}
+  weatherWarningState: {},
+  windState: {}
 })
 export const mutations = {
   setShanghaiGeoJson(state, content) {
@@ -43,7 +44,10 @@ export const mutations = {
   },
   setWeatherWarningState(state, content) {
     state.weatherWarningState = content
-  }
+  },
+  setWindState(state, content) {
+    state.windState = content
+  },
 }
 export const getters = {
   getShanghaiGeoJson(state) {
@@ -75,7 +79,10 @@ export const getters = {
   },
   getWeatherWarningState(state) {
     return state.weatherWarningState
-  }
+  },
+  getWindState(state) {
+    return state.windState
+  },
 }
 export const actions = {
   async nuxtServerInit({ dispatch }, { route }) {
@@ -91,7 +98,11 @@ export const actions = {
       await dispatch('initializeFloodWarningData')
     } else if (route.name === "warning-weather") {
       await dispatch('initializeWeatherWarningData')
-    } else {
+    } else if (route.name === "wind") {
+      await dispatch('initializeWindData')
+    } else if (route.name === "index") {
+      return
+    } else if (route.name !== "null") {
       console.warn("Failed to determine assets to load according to route, " +
         `so no additional assets will be loaded. (Route=${route.name})`)
     }
@@ -126,6 +137,14 @@ export const actions = {
       console.log("Error:", error);
     })
     commit('setWeatherWarningState', weatherWarningState.data)
+  },
+  async initializeWindData({ commit }) {
+    const windState = await this.$axios.get(
+      `${logger.apiUrl}/warning/wind_state`
+    ).catch((error) => {
+      console.log("Error:", error);
+    })
+    commit('setWindState', windState.data)
   },
   async initializeRainData({ commit }) {
     const rainState = await this.$axios.get(

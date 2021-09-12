@@ -26,7 +26,7 @@ export default {
     }
   },
   watch: {
-    '$store.state.floodWarningState'() {
+    '$store.state.weatherWarningState'() {
       this.weatherWarningState = this.$store.getters.getWeatherWarningState
       this.initializeInformation()
     }

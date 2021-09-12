@@ -25,12 +25,12 @@ export default {
     return {
       date: "",
       dateFormat: null,
-      weatherWarningState: this.$store.getters.getWeatherWarningState
+      windState: this.$store.getters.getWindState
     }
   },
   watch: {
-    "$store.state.weatherWarningState" () {
-      this.weatherWarningState = this.$store.getters.getWeatherWarningState
+    "$store.state.windState" () {
+      this.windState = this.$store.getters.getWindState
       this.parseInfoTime()
     }
   },
@@ -49,10 +49,10 @@ export default {
         second: '2-digit'
       })
       // noinspection JSUnresolvedVariable
-      this.date = this.dateFormat.format(new Date(this.weatherWarningState.message_time))
+      this.date = this.dateFormat.format(new Date(this.windState.message_time))
       // noinspection JSUnresolvedVariable
       this.$store.commit("setGetInfoTime",
-        this.dateFormat.formatToParts(new Date(this.weatherWarningState.message_time)))
+        this.dateFormat.formatToParts(new Date(this.windState.message_time)))
     }
   }
 }
