@@ -61,14 +61,12 @@ export default {
       const windState = await axios.get(
         `${logger.apiUrl}/warning/wind_state`
       ).catch((error) => {
-        // eslint-disable-next-line no-console
-        console.warn('Error:', error)
+        logger.error(`Failed to fetch wind state: ${error}`)
       })
       try {
         this.$store.commit('setWindState', windState.data)
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.warn('Error:', e)
+      } catch (error) {
+        logger.error(`Failed to set wind state: ${error}`)
       }
     },
     screenShot() {

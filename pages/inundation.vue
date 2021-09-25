@@ -61,14 +61,12 @@ export default {
       const inundationState = await axios.get(
         `${logger.apiUrl}/warning/inundation_state`
       ).catch((error) => {
-        // eslint-disable-next-line no-console
-        console.warn('Error:', error)
+        logger.error(`Failed to fetch inundation state: ${error}`)
       })
       try {
         this.$store.commit('setInundationState', inundationState.data)
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.warn('Error:', e)
+      } catch (error) {
+        logger.error(`Failed to set inundation state: ${error}`)
       }
     },
     screenShot() {

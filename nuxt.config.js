@@ -1,7 +1,12 @@
 import webpack from 'webpack'
 
 const coreVersion = "1.1.0"
-const version = "1.1.1"
+const version = "1.1.2"
+const logo = Buffer.from("JWMgICAgX18gIF9fXyAgIF9fXyAgICAgICBfX19fX19fD" +
+  "QogICAvIC8gLyAvIHwgLyAvIHwgICAgIC8gLyBfX18vDQogIC8gL18vIC8gIHwvIC98IHwgL" +
+  "3wgLyAvXF9fIFwgDQogLyBfXyAgLyAvfCAgLyB8IHwvIHwvIC9fX18vIC8gDQovXy8gL18vX" +
+  "y8gfF8vICB8X18vfF9fLy9fX19fLyAgDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgI" +
+  "CAgDQo=", 'base64').toString()
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -55,7 +60,8 @@ export default {
     extend(config) {
       config.plugins.push(new webpack.DefinePlugin({
         "process.env.version": JSON.stringify(version),
-        "process.env.coreVersion": JSON.stringify(coreVersion)
+        "process.env.coreVersion": JSON.stringify(coreVersion),
+        "process.env.logo": JSON.stringify(logo)
       }));
       config.plugins.push(new webpack.BannerPlugin({
         banner: "HNWS - mighty-nuxt-core@" + coreVersion + " " +

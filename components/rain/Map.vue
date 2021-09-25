@@ -36,6 +36,7 @@
 
 <!--suppress JSUnresolvedVariable, JSUnresolvedFunction -->
 <script>
+import logger from 'assets/logger'
 export default {
   name: 'Map',
   props: {
@@ -85,8 +86,7 @@ export default {
       } else if (this.type === "rainPeriod") {
         this.parseRainPeriod()
       } else {
-        // eslint-disable-next-line no-console
-        console.warn("Failed to draw the map, " +
+        logger.error("Failed to draw the map, " +
           `because the type isn't specified. (Type=${this.type})`)
       }
     }
@@ -102,8 +102,7 @@ export default {
       } else if (this.type === "rainPeriod") {
         this.parseRainPeriod()
       } else {
-        // eslint-disable-next-line no-console
-        console.warn("Failed to draw the map, " +
+        logger.error("Failed to draw the map, " +
           `because the type isn't specified. (Type=${this.type})`)
       }
     },
@@ -146,8 +145,7 @@ export default {
       this.stationMarkers = []
       this.areaState = {}
       if (this.rainState === undefined) {
-        // eslint-disable-next-line no-console
-        console.warn('Failed to parse rain state: undefined')
+        logger.error('Failed to parse rain state: undefined')
         return
       }
       this.rainState.rain.forEach((content) => {
@@ -173,8 +171,7 @@ export default {
       this.stationMarkers = []
       this.areaState = {}
       if (this.rainState === undefined) {
-        // eslint-disable-next-line no-console
-        console.warn('Failed to parse rain state: undefined')
+        logger.error('Failed to parse rain state: undefined')
         return
       }
       this.rainState.rain.forEach((content) => {

@@ -35,6 +35,7 @@
 
 <!--suppress JSUnresolvedVariable -->
 <script>
+import logger from 'assets/logger'
 export default {
   name: 'Information',
   props: {
@@ -144,8 +145,7 @@ export default {
         } else if (this.parseType === 'stationLevels') {
           this.parseRainStations()
         } else {
-          // eslint-disable-next-line no-console
-          console.warn('Failed to determine display type. ' +
+          logger.error('Failed to determine display type. ' +
             `(Type=${this.parseType})`)
         }
       } else if (this.displayType === "rainPeriod") {
@@ -155,13 +155,11 @@ export default {
         } else if (this.parseType === 'stationLevels') {
           this.parsePeriodStations()
         } else {
-          // eslint-disable-next-line no-console
-          console.warn('Failed to determine display type. ' +
+          logger.error('Failed to determine display type. ' +
             `(Type=${this.parseType})`)
         }
       } else {
-        // eslint-disable-next-line no-console
-        console.warn("Failed to display information, " +
+        logger.error("Failed to display information, " +
           `because the type isn't specified. (Type=${this.type})`)
       }
     },

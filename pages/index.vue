@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import logger from 'assets/logger'
 export default {
   name: 'Index',
   head () {
@@ -11,7 +12,9 @@ export default {
     }
   },
   mounted() {
-    window.location.href = "https://www.daziannetwork.com"
+    if (!(logger.mode === "development")) {
+      window.location.href = "https://www.daziannetwork.com"
+    }
   }
 }
 </script>

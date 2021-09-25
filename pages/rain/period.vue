@@ -82,14 +82,12 @@ export default {
       const rainState = await axios.get(
         `${logger.apiUrl}/warning/rain_state_1h`
       ).catch((error) => {
-        // eslint-disable-next-line no-console
-        console.warn('Error:', error)
+        logger.error(`Failed to fetch rain period: ${error}`)
       })
       try {
         this.$store.commit('setRainState', rainState.data)
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.warn('Error:', e)
+      } catch (error) {
+        logger.error(`Failed to fetch rain period state: ${error}`)
       }
     },
     changeToArea() {

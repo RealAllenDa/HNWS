@@ -52,6 +52,7 @@
 
 <!--suppress JSUnresolvedVariable, JSUnresolvedFunction -->
 <script>
+import logger from 'assets/logger'
 export default {
   name: 'Map',
   data() {
@@ -144,8 +145,7 @@ export default {
     parseFloodState() {
       this.stationMarkers = [];
       if (this.floodState === undefined) {
-        // eslint-disable-next-line no-console
-        console.warn("Failed to parse flood state: undefined")
+        logger.error("Failed to parse flood state: undefined")
         return
       }
       for (const i in this.floodState.flood) {

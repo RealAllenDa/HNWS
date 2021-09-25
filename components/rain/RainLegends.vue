@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import logger from 'assets/logger'
 export default {
   name: 'RainLegends',
   props: {
@@ -91,8 +92,7 @@ export default {
     } else if (this.type === "rainPeriod") {
       this.selectedLegends = this.rainPeriodLegends
     } else {
-      // eslint-disable-next-line no-console
-      console.warn("Failed to display legends, " +
+      logger.error("Failed to display legends, " +
         `because no type is specified. (Type=${this.type})`)
     }
   }

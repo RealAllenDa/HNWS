@@ -39,8 +39,6 @@ export default {
     return {
       title: "错误 - 家庭网络"
     }
-  },
-  mounted() {
   }
 }
 </script>

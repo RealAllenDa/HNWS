@@ -58,14 +58,12 @@ export default {
       const weatherWarningState = await axios.get(
         `${logger.apiUrl}/warning/weather_warning`
       ).catch((error) => {
-        // eslint-disable-next-line no-console
-        console.warn('Error:', error)
+        logger.error(`Failed to fetch weather warning: ${error}`)
       })
       try {
         this.$store.commit('setWeatherWarningState', weatherWarningState.data)
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.warn('Error:', e)
+      } catch (error) {
+        logger.error(`Failed to set weather warning state: ${error}`)
       }
     },
     screenShot() {

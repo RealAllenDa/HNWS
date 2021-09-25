@@ -112,7 +112,7 @@ export const actions = {
     } else if (route.name === "index") {
       return
     } else if (route.name !== "null") {
-      console.warn("Failed to determine assets to load according to route, " +
+      logger.error("Failed to determine assets to load according to route, " +
         `so no additional assets will be loaded. (Route=${route.name})`)
     }
     return await dispatch('initializeData')
@@ -121,7 +121,7 @@ export const actions = {
     const shanghaiGeoData = await this.$axios.get(
       `${logger.apiUrl}/assets/generic/around_shanghai_geojson`
     ).catch((error) => {
-      console.log("Error:", error);
+      logger.error("Error:", error);
     })
     commit('setShanghaiGeoJson', shanghaiGeoData.data)
   },
@@ -129,13 +129,13 @@ export const actions = {
     const floodWarningState = await this.$axios.get(
       `${logger.apiUrl}/warning/flood_warning`
     ).catch((error) => {
-      console.log("Error:", error);
+      logger.error("Error:", error);
     })
     commit('setFloodWarningState', floodWarningState.data)
     const riverGeoData = await this.$axios.get(
       `${logger.apiUrl}/assets/flood/river_geojson`
     ).catch((error) => {
-      console.log("Error:", error);
+      logger.error("Error:", error);
     })
     commit('setRiverGeoJson', riverGeoData.data)
   },
@@ -143,7 +143,7 @@ export const actions = {
     const weatherWarningState = await this.$axios.get(
       `${logger.apiUrl}/warning/weather_warning`
     ).catch((error) => {
-      console.log("Error:", error);
+      logger.error("Error:", error);
     })
     commit('setWeatherWarningState', weatherWarningState.data)
   },
@@ -151,7 +151,7 @@ export const actions = {
     const windState = await this.$axios.get(
       `${logger.apiUrl}/warning/wind_state`
     ).catch((error) => {
-      console.log("Error:", error);
+      logger.error("Error:", error);
     })
     commit('setWindState', windState.data)
   },
@@ -159,7 +159,7 @@ export const actions = {
     const inundationState = await this.$axios.get(
       `${logger.apiUrl}/warning/inundation_state`
     ).catch((error) => {
-      console.log("Error:", error);
+      logger.error("Error:", error);
     })
     commit('setInundationState', inundationState.data)
   },
@@ -167,7 +167,7 @@ export const actions = {
     const rainState = await this.$axios.get(
       `${logger.apiUrl}/warning/rain_state`
     ).catch((error) => {
-      console.log("Error:", error);
+      logger.error("Error:", error);
     })
     commit('setRainState', rainState.data)
   },
@@ -175,7 +175,7 @@ export const actions = {
     const rainState = await this.$axios.get(
       `${logger.apiUrl}/warning/rain_state_1h`
     ).catch((error) => {
-      console.log("Error:", error);
+      logger.error("Error:", error);
     })
     commit('setRainState', rainState.data)
   },
@@ -183,26 +183,26 @@ export const actions = {
     const riverGeoData = await this.$axios.get(
       `${logger.apiUrl}/assets/flood/river_geojson`
     ).catch((error) => {
-      console.log("Error:", error);
+      logger.error("Error:", error);
     })
     commit('setRiverGeoJson', riverGeoData.data)
 
     const riverAnnotationData = await this.$axios.get(
       `${logger.apiUrl}/assets/flood/river_annotations`
     ).catch((error) => {
-      console.log("Error:", error);
+      logger.error("Error:", error);
     })
     commit('setRiverAnnotation', riverAnnotationData.data)
 
     const floodState = await this.$axios.get(
       `${logger.apiUrl}/warning/flood_state`
     ).catch((error) => {
-      console.warn('Error:', error)
+      logger.error('Error:', error)
     })
     try {
       commit("setFloodState", floodState.data)
     } catch (e) {
-      console.warn("Failed to set floodState.", e)
+      logger.error("Failed to set floodState.", e)
     }
   }
 }

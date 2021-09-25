@@ -58,14 +58,12 @@ export default {
       const floodWarningState = await axios.get(
         `${logger.apiUrl}/warning/flood_warning`
       ).catch((error) => {
-        // eslint-disable-next-line no-console
-        console.warn('Error:', error)
+        logger.error(`Failed to fetch flood warning: ${error}`)
       })
       try {
         this.$store.commit('setFloodWarningState', floodWarningState.data)
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.warn('Error:', e)
+      } catch (error) {
+        logger.error(`Failed to set flood warning state: ${error}`)
       }
     },
     screenShot() {
