@@ -19,6 +19,10 @@ export default {
     'englishTitle': {
       type: String,
       required: true
+    },
+    noInfoAvail: {
+      type: Boolean,
+      required: true
     }
   },
   data() {
@@ -48,11 +52,15 @@ export default {
         minute: '2-digit',
         second: '2-digit'
       })
-      // noinspection JSUnresolvedVariable
-      this.date = this.dateFormat.format(new Date(this.weatherWarningState.message_time))
-      // noinspection JSUnresolvedVariable
-      this.$store.commit("setGetInfoTime",
-        this.dateFormat.formatToParts(new Date(this.weatherWarningState.message_time)))
+      if (!this.noInfoAvail) {
+        // noinspection JSUnresolvedVariable
+        this.date = this.dateFormat.format(new Date(this.weatherWarningState.message_time))
+        // noinspection JSUnresolvedVariable
+        this.$store.commit("setGetInfoTime",
+          this.dateFormat.formatToParts(new Date(this.weatherWarningState.message_time)))
+      } else {
+        this.date = "XXXX-XX-XX XX:XX:XX"
+      }
     }
   }
 }

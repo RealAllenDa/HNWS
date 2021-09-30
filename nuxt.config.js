@@ -1,7 +1,7 @@
 import webpack from 'webpack'
 
 const coreVersion = "1.1.0"
-const version = "1.1.2"
+const version = "1.1.3"
 const logo = Buffer.from("JWMgICAgX18gIF9fXyAgIF9fXyAgICAgICBfX19fX19fD" +
   "QogICAvIC8gLyAvIHwgLyAvIHwgICAgIC8gLyBfX18vDQogIC8gL18vIC8gIHwvIC98IHwgL" +
   "3wgLyAvXF9fIFwgDQogLyBfXyAgLyAvfCAgLyB8IHwvIHwvIC9fX18vIC8gDQovXy8gL18vX" +

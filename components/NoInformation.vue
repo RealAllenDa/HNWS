@@ -1,7 +1,6 @@
 <template>
-  <div class='no-information'>
-    {{ text }}
-  </div>
+  <!-- eslint-disable-next-line vue/no-v-html -->
+  <div class='no-information' v-html='text'></div>
 </template>
 
 <script>
@@ -23,7 +22,6 @@ export default {
   left: 375px;
   background: var(--information-background);
   width: 740px;
-  height: 105px;
   z-index: 9999999999;
   opacity: 0.8;
   font-size: 30px;

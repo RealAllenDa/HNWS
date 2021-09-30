@@ -111,7 +111,7 @@ export const actions = {
       await dispatch('initializeInundationData')
     } else if (route.name === "index") {
       return
-    } else if (route.name !== "null") {
+    } else if (route.name !== "null" || route.name !== null) {
       logger.error("Failed to determine assets to load according to route, " +
         `so no additional assets will be loaded. (Route=${route.name})`)
     }

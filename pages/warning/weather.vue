@@ -5,7 +5,9 @@
         class='main-container main-overlay'
         :chinese-title='chineseTitle'
         :english-title='englishTitle'
+        :no-info-avail='noInformationAvail'
       ></InformationIndex>
+      <NoInformation :text='noInformationAvailText'></NoInformation>
       <Copyright></Copyright>
       <div style='display: flex;'>
         <Map></Map>
@@ -38,7 +40,10 @@ export default {
     return {
       chineseTitle: "天气预警一览",
       englishTitle: 'Weather Warnings Overview',
-      timer: null
+      timer: null,
+      noInformationAvail: true,
+      noInformationAvailText: "目前没有针对上海的气象预警。<br>" +
+        "No weather warnings for Shanghai is currently in effect."
     }
   },
   head() {
@@ -48,6 +53,7 @@ export default {
   },
   mounted() {
     logger.initialize()
+    this.updateInformationState()
     this.timer = setInterval(this.fetchWeatherWarningState, 60000)
   },
   destroyed() {
@@ -65,6 +71,10 @@ export default {
       } catch (error) {
         logger.error(`Failed to set weather warning state: ${error}`)
       }
+    },
+    updateInformationState() {
+      // noinspection JSUnresolvedVariable
+      this.noInformationAvail = this.$store.getters.getWeatherWarningState.message_time === "";
     },
     screenShot() {
       htmlToImage.toSvg(document.getElementById("main-container"))

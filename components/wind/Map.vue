@@ -32,7 +32,7 @@
               <img
                 :src="i['icon']"
                 :style='"width:70px;height:70px;transform:rotate("+i["degrees"]+"deg)"'
-              >
+               alt='Flood icon'>
             </l-icon>
           </l-marker>
         </div>
