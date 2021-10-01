@@ -25,12 +25,12 @@ export default {
     return {
       date: "",
       dateFormat: null,
-      inundationState: this.$store.getters.getInundationState
+      inundationState: this.$store.getters['inundation/getInundationState']
     }
   },
   watch: {
-    "$store.state.inundationState" () {
-      this.inundationState = this.$store.getters.getInundationState
+    "$store.state.inundation.inundationState" () {
+      this.inundationState = this.$store.getters['inundation/getInundationState']
       this.parseInfoTime()
     }
   },

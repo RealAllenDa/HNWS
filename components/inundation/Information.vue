@@ -24,7 +24,7 @@ export default {
   name: 'Information',
   data() {
     return {
-      inundationState: this.$store.getters.getInundationState,
+      inundationState: this.$store.getters['inundation/getInundationState'],
       areaState: {
         0: [],
         1: [],
@@ -53,8 +53,8 @@ export default {
     }
   },
   watch: {
-    '$store.state.inundationState'() {
-      this.inundationState = this.$store.getters.getInundationState
+    '$store.state.inundation.inundationState'() {
+      this.inundationState = this.$store.getters['inundation/getInundationState']
       this.initializeInformation()
     }
   },

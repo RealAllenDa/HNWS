@@ -29,12 +29,12 @@ export default {
     return {
       date: "",
       dateFormat: null,
-      weatherWarningState: this.$store.getters.getWeatherWarningState
+      weatherWarningState: this.$store.getters['weather/getWeatherWarningState']
     }
   },
   watch: {
-    "$store.state.weatherWarningState" () {
-      this.weatherWarningState = this.$store.getters.getWeatherWarningState
+    "$store.state.weather.weatherWarningState" () {
+      this.weatherWarningState = this.$store.getters['weather/getWeatherWarningState']
       this.parseInfoTime()
     }
   },

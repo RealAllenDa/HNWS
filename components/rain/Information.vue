@@ -50,7 +50,7 @@ export default {
   },
   data() {
     return {
-      rainState: this.$store.getters.getRainState,
+      rainState: this.$store.getters['rain/getRainState'],
       areaState: {
         0: [],
         1: [],
@@ -125,8 +125,8 @@ export default {
     }
   },
   watch: {
-    '$store.state.rainState'() {
-      this.rainState = this.$store.getters.getRainState
+    '$store.state.rain.rainState'() {
+      this.rainState = this.$store.getters['rain/getRainState']
       this.initializeInformation()
     },
     'parseType'() {

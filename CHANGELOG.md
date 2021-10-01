@@ -1,5 +1,11 @@
 # HNWS Changelog
-## Updated at 2021/09/30
+## Updated at 2021/10/01
+
+# 1.2.0
+
+- Minor Bug Fix:
+  - Logger will not include debugging information in production build
+- Major Store Refactor: per-module basis
 
 # 1.1.3
 

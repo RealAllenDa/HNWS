@@ -64,7 +64,7 @@ export default {
         logger.error(`Failed to fetch wind state: ${error}`)
       })
       try {
-        this.$store.commit('setWindState', windState.data)
+        this.$store.commit('wind/setWindState', windState.data)
       } catch (error) {
         logger.error(`Failed to set wind state: ${error}`)
       }

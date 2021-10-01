@@ -64,7 +64,7 @@ export default {
         logger.error(`Failed to fetch inundation state: ${error}`)
       })
       try {
-        this.$store.commit('setInundationState', inundationState.data)
+        this.$store.commit('inundation/setInundationState', inundationState.data)
       } catch (error) {
         logger.error(`Failed to set inundation state: ${error}`)
       }

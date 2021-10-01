@@ -47,8 +47,8 @@ export default {
   },
   data() {
     return {
-      shanghaiGeoJson: this.$store.getters.getShanghaiGeoJson,
-      rainState: this.$store.getters.getRainState,
+      shanghaiGeoJson: this.$store.getters['general/getShanghaiGeoJson'],
+      rainState: this.$store.getters['rain/getRainState'],
       center: {
         "lat": 31.2686954430879,
         "lng": 121.52292649612262
@@ -79,8 +79,8 @@ export default {
     }
   },
   watch: {
-    '$store.state.rainState'() {
-      this.rainState = this.$store.getters.getRainState
+    '$store.state.rain.rainState'() {
+      this.rainState = this.$store.getters['rain/getRainState']
       if (this.type === "rainLevel") {
         this.parseRainState()
       } else if (this.type === "rainPeriod") {
@@ -93,10 +93,10 @@ export default {
   },
   methods: {
     updateBounds(bounds) {
-      this.$store.commit('setMapBounds', bounds)
+      this.$store.commit('general/setMapBounds', bounds)
     },
     ready(obj) {
-      this.$store.commit('setMapBounds', obj.getBounds())
+      this.$store.commit('general/setMapBounds', obj.getBounds())
       if (this.type === "rainLevel") {
         this.parseRainState()
       } else if (this.type === "rainPeriod") {

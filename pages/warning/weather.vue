@@ -67,14 +67,14 @@ export default {
         logger.error(`Failed to fetch weather warning: ${error}`)
       })
       try {
-        this.$store.commit('setWeatherWarningState', weatherWarningState.data)
+        this.$store.commit('weather/setWeatherWarningState', weatherWarningState.data)
       } catch (error) {
         logger.error(`Failed to set weather warning state: ${error}`)
       }
     },
     updateInformationState() {
       // noinspection JSUnresolvedVariable
-      this.noInformationAvail = this.$store.getters.getWeatherWarningState.message_time === "";
+      this.noInformationAvail = this.$store.getters['weather/getWeatherWarningState'].message_time === "";
     },
     screenShot() {
       htmlToImage.toSvg(document.getElementById("main-container"))

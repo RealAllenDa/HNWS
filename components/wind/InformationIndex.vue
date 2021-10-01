@@ -25,12 +25,12 @@ export default {
     return {
       date: "",
       dateFormat: null,
-      windState: this.$store.getters.getWindState
+      windState: this.$store.getters['wind/getWindState']
     }
   },
   watch: {
-    "$store.state.windState" () {
-      this.windState = this.$store.getters.getWindState
+    "$store.state.wind.windState" () {
+      this.windState = this.$store.getters['wind/getWindState']
       this.parseInfoTime()
     }
   },

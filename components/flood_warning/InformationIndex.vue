@@ -25,12 +25,12 @@ export default {
     return {
       date: "",
       dateFormat: null,
-      floodWarningState: this.$store.getters.getFloodWarningState
+      floodWarningState: this.$store.getters['flood/getFloodWarningState']
     }
   },
   watch: {
-    "$store.state.floodWarningState" () {
-      this.floodWarningState = this.$store.getters.getFloodWarningState
+    "$store.state.flood.floodWarningState" () {
+      this.floodWarningState = this.$store.getters['flood/getFloodWarningState']
       this.parseInfoTime()
     }
   },

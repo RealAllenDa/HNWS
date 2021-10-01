@@ -45,7 +45,7 @@ export default {
   },
   data () {
     return {
-      floodState: this.$store.getters.getFloodState,
+      floodState: this.$store.getters['flood/getFloodState'],
       displayAllRivers: this.$store.getters.getDisplayType,
       riverState: {
         0: [],
@@ -100,8 +100,8 @@ export default {
     }
   },
   watch: {
-    "$store.state.floodState" () {
-      this.floodState = this.$store.getters.getFloodState
+    "$store.state.flood.floodState" () {
+      this.floodState = this.$store.getters['flood/getFloodState']
       this.initializeInformation()
     },
     "$store.state.displayAllRivers" () {

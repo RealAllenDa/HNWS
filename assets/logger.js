@@ -7,10 +7,12 @@ class Logger {
     this.version = process.env.version ? process.env.version : "DEV_TEST"
     this.coreVersion = process.env.coreVersion ? process.env.coreVersion : "DEV_TEST"
     this.useProductionAPI = useProductionAPI
-    if (!useProductionAPI) {
-      this.apiUrl = this.mode==="production" ?
-        "https://api.daziannetwork.com" :
-        "http://127.0.0.1:5000"
+    if (process.mode === "development") {
+      if (!useProductionAPI) {
+        this.apiUrl = "http://127.0.0.1:5000"
+      } else {
+        this.apiUrl = "https://api.daziannetwork.com"
+      }
     } else {
       this.apiUrl = "https://api.daziannetwork.com"
     }
@@ -24,11 +26,13 @@ class Logger {
       `Powered by mighty-nuxt-core ${this.coreVersion}.`,
       `color: ${this.color}; font-size: 20px; font-weight: bold;`
     )
-    if (this.useProductionAPI) {
-      // eslint-disable-next-line no-console
-      console.warn("%c!!! Using (Overridden) Production API Server: " +
-        "It can cause unexpected behaviors.",
-        "color: orange; font-size: 20px; font-weight: bold;")
+    if (process.mode === "development") {
+      if (this.useProductionAPI) {
+        // eslint-disable-next-line no-console
+        console.warn("%c!!! Using (Overridden) Production API Server: " +
+          "It can cause unexpected behaviors.",
+          "color: orange; font-size: 20px; font-weight: bold;")
+      }
     }
   };
 

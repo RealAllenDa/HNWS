@@ -66,7 +66,7 @@ export default {
         logger.error(`Failed to fetch flood state: ${error}`)
       })
       try {
-        this.$store.commit('setFloodState', floodState.data)
+        this.$store.commit('flood/setFloodState', floodState.data)
       } catch (error) {
         logger.error(`Failed to set flood state: ${error}`)
       }

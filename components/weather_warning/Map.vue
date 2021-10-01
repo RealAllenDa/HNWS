@@ -25,8 +25,8 @@ export default {
   name: 'Map',
   data() {
     return {
-      shanghaiGeoJson: this.$store.getters.getShanghaiGeoJson,
-      weatherWarningState: this.$store.getters.getWeatherWarningState,
+      shanghaiGeoJson: this.$store.getters['general/getShanghaiGeoJson'],
+      weatherWarningState: this.$store.getters['weather/getWeatherWarningState'],
       centralDistricts: ["黄浦区","徐汇区","长宁区","静安区",
         "普陀区","闸北区","虹口区","杨浦区"],
       center: {
@@ -49,17 +49,17 @@ export default {
     }
   },
   watch: {
-    '$store.state.weatherWarningState'() {
-      this.weatherWarningState = this.$store.getters.getWeatherWarningState
+    '$store.state.weather.weatherWarningState'() {
+      this.weatherWarningState = this.$store.getters['weather/getWeatherWarningState']
       this.parseWeatherWarningState()
     }
   },
   methods: {
     updateBounds(bounds) {
-      this.$store.commit('setMapBounds', bounds)
+      this.$store.commit('general/setMapBounds', bounds)
     },
     ready(obj) {
-      this.$store.commit('setMapBounds', obj.getBounds())
+      this.$store.commit('general/setMapBounds', obj.getBounds())
       this.parseWeatherWarningState()
     },
     getStyle(feature) {

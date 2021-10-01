@@ -57,10 +57,10 @@ export default {
   name: 'Map',
   data() {
     return {
-      shanghaiGeoJson: this.$store.getters.getShanghaiGeoJson,
-      riverGeoJson: this.$store.getters.getRiverGeoJson,
-      riverAnnotations: this.$store.getters.getRiverAnnotation,
-      floodState: this.$store.getters.getFloodState,
+      shanghaiGeoJson: this.$store.getters['general/getShanghaiGeoJson'],
+      riverGeoJson: this.$store.getters['general/getRiverGeoJson'],
+      riverAnnotations: this.$store.getters['general/getRiverAnnotation'],
+      floodState: this.$store.getters['flood/getFloodState'],
       center: {
         "lat": 31.18930843952816,
         "lng": 121.05972290039064
@@ -104,17 +104,17 @@ export default {
     }
   },
   watch: {
-    "$store.state.floodState" () {
-      this.floodState = this.$store.getters.getFloodState
+    "$store.state.flood.floodState" () {
+      this.floodState = this.$store.getters['flood/getFloodState']
       this.parseFloodState()
     }
   },
   methods: {
     updateBounds(bounds) {
-      this.$store.commit("setMapBounds", bounds);
+      this.$store.commit("general/setMapBounds", bounds);
     },
     ready(obj) {
-      this.$store.commit("setMapBounds", obj.getBounds());
+      this.$store.commit("general/setMapBounds", obj.getBounds());
       this.parseFloodState();
     },
     getStyle(feature) {

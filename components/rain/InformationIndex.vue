@@ -25,12 +25,12 @@ export default {
     return {
       date: "",
       dateFormat: null,
-      rainState: this.$store.getters.getRainState
+      rainState: this.$store.getters['rain/getRainState']
     }
   },
   watch: {
-    "$store.state.rainState" () {
-      this.rainState = this.$store.getters.getRainState
+    "$store.state.rain.rainState" () {
+      this.rainState = this.$store.getters['rain/getRainState']
       this.parseInfoTime()
     }
   },

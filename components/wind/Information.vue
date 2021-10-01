@@ -24,7 +24,7 @@ export default {
   name: 'Information',
   data() {
     return {
-      windState: this.$store.getters.getWindState,
+      windState: this.$store.getters['wind/getWindState'],
       areaState: {
         0: [],
         1: [],
@@ -58,8 +58,8 @@ export default {
     }
   },
   watch: {
-    '$store.state.windState'() {
-      this.windState = this.$store.getters.getWindState
+    '$store.state.wind.windState'() {
+      this.windState = this.$store.getters['wind/getWindState']
       this.initializeInformation()
     }
   },

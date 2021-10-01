@@ -21,13 +21,13 @@ export default {
   name: 'Information',
   data() {
     return {
-      weatherWarningState: this.$store.getters.getWeatherWarningState,
+      weatherWarningState: this.$store.getters['weather/getWeatherWarningState'],
       areaState: {}
     }
   },
   watch: {
-    '$store.state.weatherWarningState'() {
-      this.weatherWarningState = this.$store.getters.getWeatherWarningState
+    '$store.state.weather.weatherWarningState'() {
+      this.weatherWarningState = this.$store.getters['weather/getWeatherWarningState']
       this.initializeInformation()
     }
   },

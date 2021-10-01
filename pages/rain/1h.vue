@@ -85,7 +85,7 @@ export default {
         logger.error(`Failed to fetch rain state: ${error}`)
       })
       try {
-        this.$store.commit('setRainState', rainState.data)
+        this.$store.commit('rain/setRainState', rainState.data)
       } catch (error) {
         logger.error(`Failed to set rain state: ${error}`)
       }

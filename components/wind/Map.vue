@@ -48,8 +48,8 @@ export default {
   name: 'Map',
   data() {
     return {
-      shanghaiGeoJson: this.$store.getters.getShanghaiGeoJson,
-      windState: this.$store.getters.getWindState,
+      shanghaiGeoJson: this.$store.getters['general/getShanghaiGeoJson'],
+      windState: this.$store.getters['wind/getWindState'],
       center: {
         "lat": 31.381135264471283,
         "lng": 121.3161145041684
@@ -80,17 +80,17 @@ export default {
     }
   },
   watch: {
-    '$store.state.windState'() {
-      this.windState = this.$store.getters.getWindState
+    '$store.state.wind.windState'() {
+      this.windState = this.$store.getters['wind/getWindState']
       this.parseWindState()
     }
   },
   methods: {
     updateBounds(bounds) {
-      this.$store.commit('setMapBounds', bounds)
+      this.$store.commit('general/setMapBounds', bounds)
     },
     ready(obj) {
-      this.$store.commit('setMapBounds', obj.getBounds())
+      this.$store.commit('general/setMapBounds', obj.getBounds())
       this.parseWindState()
     },
     parseWindState() {

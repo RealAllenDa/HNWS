@@ -12,8 +12,8 @@
           :options='geoJsonStyle'
         ></l-geo-json>
         <l-rectangle
-          v-if='$store.getters.getMapBounds != null'
-          :bounds='$store.getters.getMapBounds'
+          v-if='$store.getters["general/getMapBounds"] != null'
+          :bounds='$store.getters["general/getMapBounds"]'
           :color="'#ff0000'"
           :weight='3'
         ></l-rectangle>
@@ -27,7 +27,7 @@ export default {
   name: 'Thumbnail',
   data () {
     return {
-      shanghaiGeoJson: this.$store.getters.getShanghaiGeoJson,
+      shanghaiGeoJson: this.$store.getters['general/getShanghaiGeoJson'],
       center: {
         "lat": 31.27413104501939,
         "lng": 121.47439783668806

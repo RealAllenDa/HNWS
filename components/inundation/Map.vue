@@ -44,8 +44,8 @@ export default {
   name: 'Map',
   data() {
     return {
-      shanghaiGeoJson: this.$store.getters.getShanghaiGeoJson,
-      inundationState: this.$store.getters.getInundationState,
+      shanghaiGeoJson: this.$store.getters['general/getShanghaiGeoJson'],
+      inundationState: this.$store.getters['inundation/getInundationState'],
       center: {
         "lat": 31.28295208489115,
         "lng": 121.48544311523439
@@ -74,17 +74,17 @@ export default {
     }
   },
   watch: {
-    '$store.state.inundationState'() {
-      this.inundationState = this.$store.getters.getInundationState
+    '$store.state.inundation.inundationState'() {
+      this.inundationState = this.$store.getters['inundation/getInundationState']
       this.parseInundationState()
     }
   },
   methods: {
     updateBounds(bounds) {
-      this.$store.commit('setMapBounds', bounds)
+      this.$store.commit('general/setMapBounds', bounds)
     },
     ready(obj) {
-      this.$store.commit('setMapBounds', obj.getBounds())
+      this.$store.commit('general/setMapBounds', obj.getBounds())
       this.parseInundationState()
     },
     parseInundationState() {
