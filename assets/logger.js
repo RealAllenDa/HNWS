@@ -3,7 +3,7 @@ const callerId = require("caller-id");
 class Logger {
   constructor(useProductionAPI=false) {
     this.mode = process.mode
-    this.color = this.mode === "production" ? "#43bb88" : "orange"
+    this.color = process.mode === "production" ? "#43bb88" : "orange"
     this.version = process.env.version ? process.env.version : "DEV_TEST"
     this.coreVersion = process.env.coreVersion ? process.env.coreVersion : "DEV_TEST"
     this.useProductionAPI = useProductionAPI
@@ -66,6 +66,6 @@ class Logger {
   }
 }
 
-const logger = new Logger();
+const logger = new Logger(true);
 
 export default logger;

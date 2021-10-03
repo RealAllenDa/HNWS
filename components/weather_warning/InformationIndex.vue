@@ -19,10 +19,6 @@ export default {
     'englishTitle': {
       type: String,
       required: true
-    },
-    noInfoAvail: {
-      type: Boolean,
-      required: true
     }
   },
   data() {
@@ -52,7 +48,8 @@ export default {
         minute: '2-digit',
         second: '2-digit'
       })
-      if (!this.noInfoAvail) {
+      // noinspection JSUnresolvedVariable
+      if (this.weatherWarningState.message_time !== "") {
         // noinspection JSUnresolvedVariable
         this.date = this.dateFormat.format(new Date(this.weatherWarningState.message_time))
         // noinspection JSUnresolvedVariable

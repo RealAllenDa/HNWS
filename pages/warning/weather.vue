@@ -5,9 +5,11 @@
         class='main-container main-overlay'
         :chinese-title='chineseTitle'
         :english-title='englishTitle'
-        :no-info-avail='noInformationAvail'
       ></InformationIndex>
-      <NoInformation :text='noInformationAvailText'></NoInformation>
+      <NoInformation
+        v-if='noInformationAvail'
+        :text='noInformationAvailText'
+      ></NoInformation>
       <Copyright></Copyright>
       <div style='display: flex;'>
         <Map></Map>

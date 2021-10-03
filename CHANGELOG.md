@@ -1,6 +1,13 @@
 # HNWS Changelog
 ## Updated at 2021/10/01
 
+# 1.2.1
+
+- IMPORTANT:
+  - Weather warning page (warning/weather) was fixed
+- Minor Bug Fix:
+  - All variables in logger will be predefined
+
 # 1.2.0
 
 - Minor Bug Fix:
