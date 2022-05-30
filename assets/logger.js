@@ -1,5 +1,4 @@
 const callerId = require("caller-id");
-
 class Logger {
   constructor(useProductionAPI=false) {
     this.mode = process.mode
@@ -66,6 +65,6 @@ class Logger {
   }
 }
 
-const logger = new Logger(true);
+const logger = new Logger();
 
 export default logger;

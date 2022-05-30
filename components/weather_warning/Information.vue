@@ -1,11 +1,13 @@
 <template>
   <div class='information'>
+    <ShowDetail :text='detailText' :title='detailTitle'
+                :hidden='!isDetailShown'></ShowDetail>
     <div>
       <div v-for='(content, index) in areaState' :key='index'>
         <div class='district state'>{{ index }}</div>
         <div class='weather-alarm-list'>
           <div v-for='(i, index2) in sortWarningState(content)' :key='index2'
-               class='weather-alarms'>
+               class='weather-alarms' @click='() => warningClick(content, index2)'>
             <div class='circle' :class='i.class'></div>
             <div style='margin-left: 10px;'>{{ i.type }}</div>
           </div>
@@ -14,15 +16,25 @@
     </div>
   </div>
 </template>
-
 <!--suppress JSUnresolvedVariable -->
 <script>
+import ShowDetail from './ShowDetail'
 export default {
   name: 'Information',
+  components: {ShowDetail},
   data() {
     return {
       weatherWarningState: this.$store.getters['weather/getWeatherWarningState'],
-      areaState: {}
+      areaState: {},
+      detailText: "",
+      detailTitle: "",
+      isDetailShown: false,
+      correspondingWarningLevel: {
+        1: "蓝色",
+        2: "黄色",
+        3: "橙色",
+        4: "红色"
+      }
     }
   },
   watch: {
@@ -46,7 +58,8 @@ export default {
             "name": content.name,
             "type": content.type,
             "class": `level-${content.level}`,
-            "level": content.level
+            "level": content.level,
+            "detail": content.detail
           })
         })
       }
@@ -55,6 +68,23 @@ export default {
       return arr.slice().sort((a, b) => {
         return b.level - a.level;
       })
+    },
+    warningClick(content, index) {
+      console.log(content);
+      if (this.isDetailShown) {
+        if (this.detailText === content[index].detail) {
+          this.isDetailShown = false;
+        } else {
+          this.detailTitle = content[index].name + " " +
+            content[index].type + this.correspondingWarningLevel[content[index].level] + "预警";
+          this.detailText = content[index].detail;
+        }
+      } else {
+        this.isDetailShown = true;
+        this.detailTitle = content[index].name + " " +
+          content[index].type + this.correspondingWarningLevel[content[index].level] + "预警";
+        this.detailText = content[index].detail;
+      }
     }
   }
 }
