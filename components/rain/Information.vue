@@ -172,12 +172,18 @@ export default {
         4: [],
         5: [],
         6: []
-      }
+      };
+      const rainAreas = {};
       this.rainState.rain.forEach((content) => {
-        if (!this.areaState[content.level].includes(content.area)) {
-          this.areaState[content.level].push(content.area)
+        if (rainAreas[content.area] === undefined) {
+          rainAreas[content.area] = content.level
+        } else if (content.level > rainAreas[content.area]) {
+          rainAreas[content.area] = content.level
         }
       })
+      for (const i in rainAreas) {
+        this.areaState[rainAreas[i]].push(i)
+      }
     },
     parseRainStations() {
       this.stationState = {
@@ -212,11 +218,17 @@ export default {
         5: [],
         6: []
       }
+      const periodAreas = {};
       this.rainState.rain.forEach((content) => {
-        if (!this.areaState[content.period].includes(content.area)) {
-          this.areaState[content.period].push(content.area)
+        if (periodAreas[content.area] === undefined) {
+          periodAreas[content.area] = content.level
+        } else if (content.level > periodAreas[content.area]) {
+          periodAreas[content.area] = content.level
         }
       })
+      for (const i in periodAreas) {
+        this.areaState[periodAreas[i]].push(i)
+      }
     },
     parsePeriodStations() {
       this.stationState = {
