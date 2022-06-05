@@ -70,6 +70,8 @@ export default {
       })
       try {
         this.$store.commit('weather/setWeatherWarningState', weatherWarningState.data)
+        // noinspection JSUnresolvedVariable
+        this.noInformationAvail = this.$store.getters['weather/getWeatherWarningState'].message_time === "";
       } catch (error) {
         logger.error(`Failed to set weather warning state: ${error}`)
       }
