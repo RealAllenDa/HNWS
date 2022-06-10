@@ -112,7 +112,9 @@ export default {
             lng_lat: [content.latitude, content.longitude],
             level: content.level,
             degrees: content.degrees,
-            text: `${i}-${content.name}：${content.speed}m/s ${content.wind_level}级 ${content.degrees}度`
+            text: `${i}-${content.name}：${content.speed}m/s` +
+              `${content.wind_level}级 ${content.degrees}度(` +
+              `${content.direction})`
           })
         })
       }

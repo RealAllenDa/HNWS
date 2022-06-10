@@ -8,7 +8,7 @@ class Logger {
     this.useProductionAPI = useProductionAPI
     if (process.mode === "development") {
       if (!useProductionAPI) {
-        this.apiUrl = "http://127.0.0.1:5000"
+        this.apiUrl = "http://127.0.0.1:8000"
       } else {
         this.apiUrl = "https://api.daziannetwork.com"
       }
