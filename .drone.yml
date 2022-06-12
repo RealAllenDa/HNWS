@@ -1,0 +1,51 @@
+kind: pipeline
+type: docker
+name: build
+
+trigger:
+  event:
+    - tag
+
+steps:
+  - name: docker
+    image: plugins/docker
+    settings:
+      auto_tag: true
+      force_tag: true
+      username:
+        from_secret: docker_user
+      password:
+        from_secret: docker_password
+      repo: registry.daziannetwork.com/hnfront/hnws
+      registry: registry.daziannetwork.com
+
+---
+kind: pipeline
+type: exec
+name: deploy
+
+platform:
+  os: linux
+  arch: amd64
+
+clone:
+  disable: true
+
+steps:
+  - name: deploy
+    environment:
+      docker_user:
+        from_secret: docker_user
+      docker_pass:
+        from_secret: docker_password
+    commands:
+      - docker stop hnws || true && docker rm hnws || true
+      - docker login --username $${docker_user} --password $${docker_pass} registry.daziannetwork.com
+      - docker run -d --pull=always --name hnws -p 3000:3000 registry.daziannetwork.com/hnfront/hnws:1
+
+depends_on:
+  - build
+
+trigger:
+  event:
+    - tag
