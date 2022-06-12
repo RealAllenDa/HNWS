@@ -37,7 +37,7 @@ steps:
     commands:
       - docker stop hnws || true && docker rm hnws || true
       - docker login --username $${docker_user} --password $${docker_pass} registry.mightyhub.net
-      - docker run -d --pull=always --name hnws -p 3000:3000 registry.mightyhub.net/hnfront/hnws:1
+      - docker run -d --pull=always --name hnws -p 3000:3000 registry.mightyhub.net/hnfront/hnws:latest
 
 depends_on:
   - build
