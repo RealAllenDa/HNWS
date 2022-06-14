@@ -12,6 +12,7 @@
       <div style='display: flex;'>
         <Map></Map>
         <InformationList
+          ref='infoList'
           :display-normal='displayNormal'
           :display-thumbnail='displayThumbnail'
           :parse-type='"floodStations"'
@@ -38,6 +39,48 @@
       >
         显示平常水位站
       </b-form-checkbox>
+    </div>
+    <div class='screenshot-container date-container'>
+      <label class='mr-3 label' for='date-start'>图表开始时间</label>
+      <b-input-group style='width: 200px;'>
+        <b-form-input
+          id='date-start'
+          v-model='startDate'
+          autocomplete='off'
+          placeholder='YYYY-MM-DD'
+          type='text'
+        ></b-form-input>
+        <b-input-group-append>
+          <b-form-datepicker
+            v-model='startDate'
+            button-only
+            locale='en-US'
+            right
+            style='z-index: 999999'
+            @context='updateDate'
+          ></b-form-datepicker>
+        </b-input-group-append>
+      </b-input-group>
+      <label class='mr-3 ml-5 label' for='date-end'>图表结束时间</label>
+      <b-input-group style='width: 200px;'>
+        <b-form-input
+          id='date-end'
+          v-model='endDate'
+          autocomplete='off'
+          placeholder='YYYY-MM-DD'
+          type='text'
+        ></b-form-input>
+        <b-input-group-append>
+          <b-form-datepicker
+            v-model='endDate'
+            button-only
+            locale='en-US'
+            right
+            style='z-index: 999999'
+            @context='updateDate'
+          ></b-form-datepicker>
+        </b-input-group-append>
+      </b-input-group>
     </div>
   </div>
 </template>
@@ -70,7 +113,11 @@ export default {
       englishTitle: 'Water Level Observation Stations Overview',
       timer: null,
       displayThumbnail: true,
-      displayNormal: false
+      displayNormal: false,
+      startDate:
+        `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`,
+      endDate:
+        `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`
     }
   },
   head() {
@@ -86,6 +133,11 @@ export default {
     clearInterval(this.timer)
   },
   methods: {
+    updateDate() {
+      this.$store.commit('flood/setChartStartDate', this.startDate)
+      this.$store.commit('flood/setChartEndDate', this.endDate)
+      this.$refs.infoList.updateStationStatus()
+    },
     async fetchFloodState() {
       const floodState = await axios.get(
         `${logger.apiUrl}/warning/flood_state`
@@ -119,7 +171,7 @@ export default {
 .main-container {
   width: 1920px;
   height: 1080px;
-  z-index: 99999999;
+  z-index: 99999;
   position: absolute;
   top: 0;
   left: 0;
@@ -141,5 +193,14 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.date-container {
+  top: 1170px;
+}
+
+.label {
+  font-size: 20px;
+  margin-bottom: 0;
 }
 </style>

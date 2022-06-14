@@ -2,12 +2,14 @@
   <div class='information-container'>
     <Information
       v-if='!displayThumbnail'
+      ref='information'
       :display-normal='displayNormal'
       :parse-type='parseType'
       class='full-height'
     ></Information>
     <Information
       v-else
+      ref='information'
       :display-normal='displayNormal'
       :parse-type='parseType'
     ></Information>
@@ -37,6 +39,11 @@ export default {
     displayNormal: {
       type: Boolean,
       required: true
+    }
+  },
+  methods: {
+    updateStationStatus() {
+      this.$refs.information.updateStationDetail()
     }
   }
 }

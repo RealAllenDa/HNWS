@@ -4,7 +4,9 @@ export const state = () => ({
   floodState: {},
   floodWarningState: {},
   detailedStationState: {},
-  mapShown: false
+  mapShown: false,
+  chartStartDate: '',
+  chartEndDate: ''
 })
 
 export const mutations = {
@@ -19,6 +21,12 @@ export const mutations = {
   },
   setMapShown(state, content) {
     state.mapShown = content
+  },
+  setChartEndDate(state, content) {
+    state.chartEndDate = content
+  },
+  setChartStartDate(state, content) {
+    state.chartStartDate = content
   }
 }
 
@@ -34,6 +42,12 @@ export const getters = {
   },
   getMapShown(state) {
     return state.mapShown
+  },
+  getChartStartDate(state) {
+    return state.chartStartDate
+  },
+  getChartEndDate(state) {
+    return state.chartEndDate
   }
 }
 

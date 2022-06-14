@@ -210,17 +210,18 @@ export default {
       const content = stationDetail.detail
       const station = stationDetail.station
       const pieces = this.parsePieces(station)
-      console.log(content, station, pieces)
+      const startTime = this.$store.getters['flood/getChartStartDate']
+      const endTime = this.$store.getters['flood/getChartEndDate']
       // noinspection JSUnresolvedVariable
       this.chart.setOption({
-          title: {
-            text: `${station.name} 水位一览`,
-            left: '1%',
-            top: '1%'
-          },
-          tooltip: {
-            trigger: 'axis'
-          },
+        title: {
+          text: `${station.name} 水位一览 (${startTime} 00:00:00 - ${endTime} 23:59:59)`,
+          left: '1%',
+          top: '1%'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
           grid: {
             left: '5%',
             right: '15%',
@@ -236,7 +237,7 @@ export default {
               dataZoom: {
                 yAxisIndex: 'none'
               },
-              restore: {}
+              saveAsImage: {}
             }
           },
           dataZoom: [

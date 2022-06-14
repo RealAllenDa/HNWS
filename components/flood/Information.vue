@@ -232,20 +232,24 @@ export default {
       }
       return 0
     },
-    showStationDetail(station) {
-      if (this.previousStation === station) {
+    updateStationDetail() {
+      if (this.$store.getters['flood/getMapShown']) {
+        this.showStationDetail(this.previousStation, true)
+      }
+    },
+    showStationDetail(station, hasDateChanged = false) {
+      if (this.previousStation === station && !hasDateChanged) {
         this.$store.commit('flood/setMapShown', false)
         this.previousStation = ''
         return
       } else {
         this.previousStation = station
       }
-      const infoTime = new Date()
-      const date =
-        `${infoTime.getFullYear()}-${infoTime.getMonth() + 1}-${infoTime.getDate()}`
+      const startDate = this.$store.getters['flood/getChartStartDate']
+      const endDate = this.$store.getters['flood/getChartEndDate']
       axios.get(
         `${logger.apiUrl}/warning/previous_flood_state?` +
-        `start_time=${date}&end_time=${date}&is_station=true`
+        `start_time=${startDate}&end_time=${endDate}&is_station=true`
       ).catch((error) => {
         console.error(`Failed to fetch previous flood state`, error)
       }).then((content) => {
