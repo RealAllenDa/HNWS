@@ -2,31 +2,57 @@
   <div>
     <div id='main-container' class='main-container'>
       <InformationIndex
-        class='main-container main-overlay'
         :chinese-title='chineseTitle'
         :english-title='englishTitle'
+        class='main-container main-overlay'
       ></InformationIndex>
       <Copyright></Copyright>
       <FloodLegends></FloodLegends>
       <div style='display: flex;'>
         <Map></Map>
-        <InformationList :parse-type='"floodRivers"'></InformationList>
+        <InformationList
+          :display-normal='displayNormal'
+          :display-thumbnail='displayThumbnail'
+          :parse-type='"floodRivers"'></InformationList>
       </div>
     </div>
     <div class='screenshot-container'>
-      <b-button variant='primary' @click='screenShot'>下载图片</b-button>
-      <b-dropdown text="显示类型" variant='primary'
-                  class='dropdown-screenshot'>
+      <b-button size='lg' variant='primary' @click='screenShot'>下载图片</b-button>
+      <b-dropdown class='dropdown-screenshot' size='lg'
+                  text='显示类型'
+                  variant='primary'>
         <b-dropdown-item
-          v-if='!displayAllRivers' href="#"
-          @click='changeToAll'>指定河川</b-dropdown-item>
-        <b-dropdown-item v-else active href="#"
-                         @click='changeToAll'>指定河川</b-dropdown-item>
-        <b-dropdown-item v-if='!displayAllRivers' active href="#"
-                         @click='changeToDesignated'>所有河川</b-dropdown-item>
-        <b-dropdown-item v-else href="#"
-                         @click='changeToDesignated'>所有河川</b-dropdown-item>
+          v-if='!displayAllRivers' href='#'
+          @click='changeToAll'>指定河川
+        </b-dropdown-item>
+        <b-dropdown-item v-else active href='#'
+                         @click='changeToAll'>指定河川
+        </b-dropdown-item>
+        <b-dropdown-item v-if='!displayAllRivers' active href='#'
+                         @click='changeToDesignated'>所有河川
+        </b-dropdown-item>
+        <b-dropdown-item v-else href='#'
+                         @click='changeToDesignated'>所有河川
+        </b-dropdown-item>
       </b-dropdown>
+      <b-form-checkbox
+        v-model='displayThumbnail'
+        :unchecked-value='false'
+        :value='true'
+        class='ml-5'
+        size='lg'
+      >
+        显示缩略图
+      </b-form-checkbox>
+      <b-form-checkbox
+        v-model='displayNormal'
+        :unchecked-value='false'
+        :value='true'
+        class='ml-lg-5'
+        size='lg'
+      >
+        显示平常
+      </b-form-checkbox>
     </div>
   </div>
 </template>
@@ -55,12 +81,14 @@ export default {
     return {
       displayAllRivers: this.$store.getters.getDisplayType,
       chineseTitle: this.$store.getters.getDisplayType ?
-                      '指定河川洪水预报' :
-                      "所有河川洪水预报",
+        '指定河川洪水预报' :
+        '所有河川洪水预报',
       englishTitle: this.$store.getters.getDisplayType ?
-                      'Flood Forecast For Designated Rivers' :
-                      'Flood Forecast For All Rivers',
-      timer: null
+        'Flood Forecast For Designated Rivers' :
+        'Flood Forecast For All Rivers',
+      timer: null,
+      displayThumbnail: true,
+      displayNormal: false
     }
   },
   head() {
@@ -94,9 +122,9 @@ export default {
           // Filename like HNWS_Flood_Rivers_YYYY_MM_DD_HH_MM_SS.png
           const infoTime = this.$store.getters.getGetInfoTime
           const filename = `HNWS_Flood_Rivers_${
-            this.displayAllRivers ?
-              "Designated" :
-              "All"
+              this.displayAllRivers ?
+                'Designated' :
+                'All'
             }_` +
             `${infoTime[0].value}_${infoTime[2].value}_${infoTime[4].value}_` +
             `${infoTime[6].value}_${infoTime[8].value}_${infoTime[10].value}.png`
@@ -104,21 +132,21 @@ export default {
         })
     },
     changeToAll() {
-      this.$store.commit("setDisplayAllRivers", true)
+      this.$store.commit('setDisplayAllRivers', true)
       this.displayAllRivers = this.$store.getters.getDisplayType
       this.chineseTitle = this.$store.getters.getDisplayType ?
         '指定河川洪水预报' :
-        "所有河川洪水预报"
+        '所有河川洪水预报'
       this.englishTitle = this.$store.getters.getDisplayType ?
         'Flood Forecast For Designated Rivers' :
         'Flood Forecast For All Rivers'
     },
     changeToDesignated() {
-      this.$store.commit("setDisplayAllRivers", false)
+      this.$store.commit('setDisplayAllRivers', false)
       this.displayAllRivers = this.$store.getters.getDisplayType
       this.chineseTitle = this.$store.getters.getDisplayType ?
         '指定河川洪水预报' :
-        "所有河川洪水预报"
+        '所有河川洪水预报'
       this.englishTitle = this.$store.getters.getDisplayType ?
         'Flood Forecast For Designated Rivers' :
         'Flood Forecast For All Rivers'

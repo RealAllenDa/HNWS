@@ -2,12 +2,12 @@
   <div class='map-container'>
     <client-only>
       <l-map ref='map'
-             style='background: #a4a8ab'
-             :options='options'
              :center='center'
+             :options='options'
              :zoom='10.12'
-             @update:bounds='updateBounds'
+             style='background: #a4a8ab'
              @ready='ready'
+             @update:bounds='updateBounds'
       >
         <l-geo-json
           ref='areaGeoJsonInstance'
@@ -21,11 +21,12 @@
             <l-tooltip :options='{
               "className": "tooltip-show",
               "direction": "top"
-            }'>{{ i["text"] }}</l-tooltip>
+            }'>{{ i['text'] }}
+            </l-tooltip>
             <l-icon
-              :icon-url="i['icon']"
-              :icon-size='[70, 70]'
               :icon-anchor='[27, 65]'
+              :icon-size='[70, 70]'
+              :icon-url="i['icon']"
             ></l-icon>
           </l-marker>
         </div>
@@ -37,6 +38,7 @@
 <!--suppress JSUnresolvedVariable, JSUnresolvedFunction -->
 <script>
 import logger from 'assets/logger'
+
 export default {
   name: 'Map',
   props: {
@@ -50,8 +52,8 @@ export default {
       shanghaiGeoJson: this.$store.getters['general/getShanghaiGeoJson'],
       rainState: this.$store.getters['rain/getRainState'],
       center: {
-        "lat": 31.2686954430879,
-        "lng": 121.52292649612262
+        'lat': 31.2686954430879,
+        'lng': 121.52292649612262
       },
       options: {
         zoomSnap: 0.01,
@@ -81,12 +83,12 @@ export default {
   watch: {
     '$store.state.rain.rainState'() {
       this.rainState = this.$store.getters['rain/getRainState']
-      if (this.type === "rainLevel") {
+      if (this.type === 'rainLevel') {
         this.parseRainState()
-      } else if (this.type === "rainPeriod") {
+      } else if (this.type === 'rainPeriod') {
         this.parseRainPeriod()
       } else {
-        logger.error("Failed to draw the map, " +
+        logger.error('Failed to draw the map, ' +
           `because the type isn't specified. (Type=${this.type})`)
       }
     }
@@ -97,43 +99,43 @@ export default {
     },
     ready(obj) {
       this.$store.commit('general/setMapBounds', obj.getBounds())
-      if (this.type === "rainLevel") {
+      if (this.type === 'rainLevel') {
         this.parseRainState()
-      } else if (this.type === "rainPeriod") {
+      } else if (this.type === 'rainPeriod') {
         this.parseRainPeriod()
       } else {
-        logger.error("Failed to draw the map, " +
+        logger.error('Failed to draw the map, ' +
           `because the type isn't specified. (Type=${this.type})`)
       }
     },
     getStyle(feature) {
-      let color = "#7f7f7f";
-      let stroke = "white";
-      let strokeWeight = 1;
+      let color = '#7f7f7f'
+      let stroke = 'white'
+      let strokeWeight = 1
       switch (this.areaState[feature.properties.name]) {
         case 0:
-          color = "#7f7f7f";
-          break;
+          color = '#7f7f7f'
+          break
         case 1:
-          color = "dodgerblue";
-          break;
+          color = '#1e90ff'
+          break
         case 2:
-          color = "#EEE414";
-          break;
+          color = '#EEE414'
+          break
         case 3:
-          color = "orange";
-          break;
+          color = 'orange'
+          break
         case 4:
-          color = "red";
-          break;
+          color = 'red'
+          break
         case 5:
-          color = "#B31AB1";
-          break;
+          color = '#B31AB1'
+          break
         case 6:
-          color = "black";
-          stroke = "yellow";
-          strokeWeight = 2;
-          break;
+          color = 'black'
+          stroke = 'yellow'
+          strokeWeight = 2
+          break
       }
       return {
         fillColor: color,

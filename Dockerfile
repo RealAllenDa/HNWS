@@ -1,4 +1,4 @@
-FROM node:lts as builder
+FROM v7odpsx0.mirror.aliyuncs.com/library/node:lts as builder
 
 WORKDIR /app
 
@@ -8,7 +8,7 @@ RUN npm install
 
 RUN npm run build
 
-FROM node:lts
+FROM v7odpsx0.mirror.aliyuncs.com/library/node:lts
 
 WORKDIR /app
 

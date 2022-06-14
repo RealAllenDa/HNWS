@@ -2,7 +2,7 @@
   --background-color: #1D1D1D;
   --information-background: #111111;
   --thumbnail-background: #1b4154;
-  --flood-normal-color: dodgerblue;
+  --flood-normal-color: #1e90ff;
   --flood-caution-color: #EEE414;
   --flood-warning-color: #FF3E1A;
   --flood-danger-color: #B31AB1;
@@ -20,22 +20,27 @@
   -webkit-font-smoothing: antialiased;
   font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif;
 }
+
 * ::selection {
   background: #73c9e5;
   color: inherit;
 }
+
 .tooltip-show {
   font-size: 22px;
 }
+
 body {
   margin: 0;
   padding: 0;
   color: white !important;
   background: var(--background-color) !important;
 }
+
 .important-rivers {
   z-index: 999 !important;
 }
+
 .river-annotation {
   background: black !important;
   color: white !important;
@@ -44,13 +49,16 @@ body {
   box-shadow: none !important;
   padding: 3px !important;
 }
+
 .river-annotation:before {
   border-top: none !important;
 }
+
 .leaflet-tooltip-top:before {
   border-top: none;
   margin-bottom: 0;
 }
+
 .general-legends {
   display: flex;
   background: var(--information-background);
@@ -63,18 +71,21 @@ body {
   font-size: 30px;
 
 }
+
 .flood-legends {
   width: 300px;
   height: 350px;
   top: 695px;
   left: 1180px;
 }
+
 .rain-legends {
   width: 300px;
   height: 460px;
   top: 585px;
   left: 1180px;
 }
+
 .information {
   width: 420px;
   height: 690px;
@@ -82,6 +93,7 @@ body {
   padding: 0 20px 20px;
   user-select: none;
 }
+
 .state {
   width: 380px;
   height: 50px;
@@ -91,6 +103,7 @@ body {
   margin-top: 20px;
   line-height: 45px;
 }
+
 .state-text-container {
   width: 380px;
   height: auto;
@@ -99,17 +112,21 @@ body {
   margin-top: 10px;
   font-size: 23px;
 }
+
 .state-text {
   margin-left: 30px;
 }
+
 .more {
   color: yellow;
   font-weight: bold;
 }
+
 .dropdown-screenshot {
   margin-left: 20px;
   z-index: 9999999999;
 }
+
 .current-alarm-title {
   font-size: 25px;
   font-weight: bold;

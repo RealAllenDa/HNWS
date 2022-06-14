@@ -27,15 +27,15 @@ export default {
     InformationIndex,
     Information
   },
-  head() {
-    return {
-      title: this.chineseTitle + ' - HNWS'
-    }
-  },
   data() {
     return {
       chineseTitle: '警报、预报一览',
       englishTitle: 'Warnings Overview'
+    }
+  },
+  head() {
+    return {
+      title: this.chineseTitle + ' - HNWS'
     }
   },
   methods: {
@@ -45,7 +45,7 @@ export default {
           // Filename like HNWS_Flood_Stations_YYYY_MM_DD_HH_MM_SS.png
           const infoTime = new Date()
           const filename = `HNWS_Warning_Generic_` +
-            `${infoTime.getFullYear()}_${infoTime.getMonth()}_${infoTime.getDay()}_` +
+            `${infoTime.getFullYear()}_${infoTime.getMonth() + 1}_${infoTime.getDate()}_` +
             `${infoTime.getHours()}_${infoTime.getMinutes()}_${infoTime.getSeconds()}.png`
           SVGToPNG.download(data, filename)
         })

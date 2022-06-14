@@ -2,12 +2,12 @@
   <div class='map-container'>
     <client-only>
       <l-map ref='map'
-             style='background: #a4a8ab'
-             :options='options'
              :center='center'
+             :options='options'
              :zoom='10.12'
-             @update:bounds='updateBounds'
+             style='background: #a4a8ab'
              @ready='ready'
+             @update:bounds='updateBounds'
       >
         <l-geo-json
           ref='areaGeoJsonInstance'
@@ -92,7 +92,7 @@ export default {
           color = '#7f7f7f'
           break
         case 1:
-          color = 'dodgerblue'
+          color = '#1e90ff'
           break
         case 2:
           color = '#EEE414'
@@ -126,7 +126,7 @@ export default {
           color = '#808080'
           break
         case 1:
-          color = 'dodgerblue'
+          color = '#1e90ff'
           break
         case 2:
           color = '#EEE414'
@@ -139,7 +139,7 @@ export default {
           break
       }
       return {
-        color: isHuangpuRiver ? color : "#808080",
+        color: isHuangpuRiver ? color : '#808080',
         weight: isHuangpuRiver ? 10 : 0,
         fill: false,
         className: isHuangpuRiver ? 'important-rivers' : ''

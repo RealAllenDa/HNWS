@@ -2,19 +2,42 @@
   <div>
     <div id='main-container' class='main-container'>
       <InformationIndex
-        class='main-container main-overlay'
         :chinese-title='chineseTitle'
         :english-title='englishTitle'
+        class='main-container main-overlay'
       ></InformationIndex>
       <Copyright></Copyright>
       <FloodStationLegends></FloodStationLegends>
+      <FloodChart></FloodChart>
       <div style='display: flex;'>
         <Map></Map>
-        <InformationList :parse-type='"floodStations"'></InformationList>
+        <InformationList
+          :display-normal='displayNormal'
+          :display-thumbnail='displayThumbnail'
+          :parse-type='"floodStations"'
+        ></InformationList>
       </div>
     </div>
     <div class='screenshot-container'>
-      <b-button variant='primary' style='font-size: 20px' @click='screenShot'>下载图片</b-button>
+      <b-button size='lg' variant='primary' @click='screenShot'>下载图片</b-button>
+      <b-form-checkbox
+        v-model='displayThumbnail'
+        :unchecked-value='false'
+        :value='true'
+        class='ml-lg-5'
+        size='lg'
+      >
+        显示缩略图
+      </b-form-checkbox>
+      <b-form-checkbox
+        v-model='displayNormal'
+        :unchecked-value='false'
+        :value='true'
+        class='ml-lg-5'
+        size='lg'
+      >
+        显示平常水位站
+      </b-form-checkbox>
     </div>
   </div>
 </template>
@@ -29,10 +52,12 @@ import Copyright from '@/components/Copyright'
 import FloodStationLegends from '@/components/flood/FloodStationLegends'
 import Map from '@/components/flood/Map'
 import InformationList from '@/components/flood/InformationList'
+import FloodChart from '@/components/flood/FloodChart'
 
 export default {
   name: 'FloodStations',
   components: {
+    FloodChart,
     InformationIndex,
     Copyright,
     FloodStationLegends,
@@ -43,7 +68,9 @@ export default {
     return {
       chineseTitle: '水位观测站一览',
       englishTitle: 'Water Level Observation Stations Overview',
-      timer: null
+      timer: null,
+      displayThumbnail: true,
+      displayNormal: false
     }
   },
   head() {
@@ -72,15 +99,15 @@ export default {
       }
     },
     screenShot() {
-      htmlToImage.toSvg(document.getElementById("main-container"))
-      .then(data => {
-        // Filename like HNWS_Flood_Stations_YYYY_MM_DD_HH_MM_SS.png
-        const infoTime = this.$store.getters.getGetInfoTime
-        const filename = `HNWS_Flood_Stations_` +
-        `${infoTime[0].value}_${infoTime[2].value}_${infoTime[4].value}_` +
-        `${infoTime[6].value}_${infoTime[8].value}_${infoTime[10].value}.png`
-        SVGToPNG.download(data, filename)
-      })
+      htmlToImage.toSvg(document.getElementById('main-container'))
+        .then(data => {
+          // Filename like HNWS_Flood_Stations_YYYY_MM_DD_HH_MM_SS.png
+          const infoTime = this.$store.getters.getGetInfoTime
+          const filename = `HNWS_Flood_Stations_` +
+            `${infoTime[0].value}_${infoTime[2].value}_${infoTime[4].value}_` +
+            `${infoTime[6].value}_${infoTime[8].value}_${infoTime[10].value}.png`
+          SVGToPNG.download(data, filename)
+        })
     }
   }
 }

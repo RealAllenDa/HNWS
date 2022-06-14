@@ -1,11 +1,11 @@
 import webpack from 'webpack'
-import {coreVersion, version} from './package.json'
+import { coreVersion, version } from './package.json'
 
-const logo = Buffer.from("JWMgICAgX18gIF9fXyAgIF9fXyAgICAgICBfX19fX19fD" +
-  "QogICAvIC8gLyAvIHwgLyAvIHwgICAgIC8gLyBfX18vDQogIC8gL18vIC8gIHwvIC98IHwgL" +
-  "3wgLyAvXF9fIFwgDQogLyBfXyAgLyAvfCAgLyB8IHwvIHwvIC9fX18vIC8gDQovXy8gL18vX" +
-  "y8gfF8vICB8X18vfF9fLy9fX19fLyAgDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgI" +
-  "CAgDQo=", 'base64').toString()
+const logo = Buffer.from('JWMgICAgX18gIF9fXyAgIF9fXyAgICAgICBfX19fX19fD' +
+  'QogICAvIC8gLyAvIHwgLyAvIHwgICAgIC8gLyBfX18vDQogIC8gL18vIC8gIHwvIC98IHwgL' +
+  '3wgLyAvXF9fIFwgDQogLyBfXyAgLyAvfCAgLyB8IHwvIHwvIC9fX18vIC8gDQovXy8gL18vX' +
+  'y8gfF8vICB8X18vfF9fLy9fX19fLyAgDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgI' +
+  'CAgDQo=', 'base64').toString()
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -26,11 +26,11 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-  ],
+  css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~plugins/echarts'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -39,7 +39,7 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/eslint
-    '@nuxtjs/eslint-module',
+    '@nuxtjs/eslint-module'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -48,7 +48,7 @@ export default {
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    "nuxt-leaflet"
+    'nuxt-leaflet'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -58,15 +58,15 @@ export default {
   build: {
     extend(config) {
       config.plugins.push(new webpack.DefinePlugin({
-        "process.env.version": JSON.stringify(version),
-        "process.env.coreVersion": JSON.stringify(coreVersion),
-        "process.env.logo": JSON.stringify(logo)
-      }));
+        'process.env.version': JSON.stringify(version),
+        'process.env.coreVersion': JSON.stringify(coreVersion),
+        'process.env.logo': JSON.stringify(logo)
+      }))
       config.plugins.push(new webpack.BannerPlugin({
-        banner: "HNWS - mighty-nuxt-core@" + coreVersion + " " +
-          "Copyright © 2021 Homenetwork. All rights reserved.",
+        banner: 'HNWS - mighty-nuxt-core@' + coreVersion + ' ' +
+          'Copyright © 2021 Homenetwork. All rights reserved.',
         entryOnly: true
-      }));
+      }))
     }
   },
   messages: {

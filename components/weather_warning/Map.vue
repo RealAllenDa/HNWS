@@ -2,12 +2,12 @@
   <div class='map-container'>
     <client-only>
       <l-map ref='map'
-             style='background: #a4a8ab'
-             :options='options'
              :center='center'
+             :options='options'
              :zoom='10.12'
-             @update:bounds='updateBounds'
+             style='background: #a4a8ab'
              @ready='ready'
+             @update:bounds='updateBounds'
       >
         <l-geo-json
           ref='areaGeoJsonInstance'
@@ -27,8 +27,8 @@ export default {
     return {
       shanghaiGeoJson: this.$store.getters['general/getShanghaiGeoJson'],
       weatherWarningState: this.$store.getters['weather/getWeatherWarningState'],
-      centralDistricts: ["黄浦区","徐汇区","长宁区","静安区",
-        "普陀区","闸北区","虹口区","杨浦区"],
+      centralDistricts: ['黄浦区', '徐汇区', '长宁区', '静安区',
+        '普陀区', '闸北区', '虹口区', '杨浦区'],
       center: {
         'lat': 31.2686954430879,
         'lng': 121.52292649612262
@@ -45,7 +45,7 @@ export default {
           color: '#7F7F7F',
           weight: 1
         }
-      },
+      }
     }
   },
   watch: {
@@ -71,14 +71,14 @@ export default {
         weight: 1
       }
       if (this.centralDistricts.includes(feature.properties.name)) {
-        districtName = "上海市"
+        districtName = '上海市'
       }
       switch (this.weatherWarningState.coloring[districtName]) {
         case 0:
           color = '#7f7f7f'
           break
         case 1:
-          color = 'dodgerblue'
+          color = '#1e90ff'
           break
         case 2:
           color = '#EEE414'

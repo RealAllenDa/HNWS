@@ -1,7 +1,17 @@
 <template>
   <div class='information-container'>
-    <Information :parse-type='parseType'></Information>
-    <Thumbnail></Thumbnail>
+    <Information
+      v-if='!displayThumbnail'
+      :display-normal='displayNormal'
+      :parse-type='parseType'
+      class='full-height'
+    ></Information>
+    <Information
+      v-else
+      :display-normal='displayNormal'
+      :parse-type='parseType'
+    ></Information>
+    <Thumbnail v-if='displayThumbnail'></Thumbnail>
   </div>
 </template>
 
@@ -19,6 +29,14 @@ export default {
     parseType: {
       type: String,
       required: true
+    },
+    displayThumbnail: {
+      type: Boolean,
+      required: true
+    },
+    displayNormal: {
+      type: Boolean,
+      required: true
     }
   }
 }
@@ -30,5 +48,9 @@ export default {
   height: 1080px;
   display: flex;
   flex-direction: column;
+}
+
+.full-height {
+  height: 1920px;
 }
 </style>
