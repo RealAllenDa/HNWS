@@ -222,16 +222,16 @@ export default {
         tooltip: {
           trigger: 'axis'
         },
-          grid: {
-            left: '5%',
-            right: '15%',
-            bottom: '10%'
-          },
-          xAxis: {
-            data: Object.keys(content)
-          },
-          yAxis: {},
-          toolbox: {
+        grid: {
+          left: '5%',
+          right: '15%',
+          bottom: '10%'
+        },
+        xAxis: {
+          data: Object.keys(content)
+        },
+        yAxis: {},
+        toolbox: {
             right: 10,
             feature: {
               dataZoom: {
