@@ -251,16 +251,16 @@ export default {
         },
         dataZoom: [
           {
-              startValue: Object.keys(content)[0]
-            },
-            {
-              type: 'inside'
-            }
-          ],
-          visualMap: {
-            textStyle: {
-              fontSize: 15
-            },
+            startValue: Object.keys(content)[0]
+          },
+          {
+            type: 'inside'
+          }
+        ],
+        visualMap: {
+          textStyle: {
+            fontSize: 15
+          },
             top: 50,
             right: 10,
             pieces: pieces.pieces,
