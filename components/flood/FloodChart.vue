@@ -271,16 +271,16 @@ export default {
         series: {
           name: '水位',
           type: 'line',
-            symbolSize: 10,
-            data: Object.values(content)
-              .map(item => {
-                return item.current_level
-              }),
-            markLine: {
-              silent: true,
-              lineStyle: {
-                color: '#333'
-              },
+          symbolSize: 10,
+          data: Object.values(content)
+            .map(item => {
+              return item.current_level
+            }),
+          markLine: {
+            silent: true,
+            lineStyle: {
+              color: '#333'
+            },
               data: pieces.markLines
             }
           }
