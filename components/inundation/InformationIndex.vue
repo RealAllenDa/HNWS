@@ -23,13 +23,13 @@ export default {
   },
   data() {
     return {
-      date: "",
+      date: '',
       dateFormat: null,
       inundationState: this.$store.getters['inundation/getInundationState']
     }
   },
   watch: {
-    "$store.state.inundation.inundationState" () {
+    '$store.state.inundation.inundationState'() {
       this.inundationState = this.$store.getters['inundation/getInundationState']
       this.parseInfoTime()
     }
@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     parseInfoTime() {
-      this.dateFormat = Intl.DateTimeFormat(undefined, {
+      this.dateFormat = Intl.DateTimeFormat('zh-Hans-CN', {
         hour12: false,
         year: 'numeric',
         month: '2-digit',
@@ -51,7 +51,7 @@ export default {
       // noinspection JSUnresolvedVariable
       this.date = this.dateFormat.format(new Date(this.inundationState.message_time))
       // noinspection JSUnresolvedVariable
-      this.$store.commit("setGetInfoTime",
+      this.$store.commit('setGetInfoTime',
         this.dateFormat.formatToParts(new Date(this.inundationState.message_time)))
     }
   }

@@ -261,16 +261,16 @@ export default {
           textStyle: {
             fontSize: 15
           },
-            top: 50,
-            right: 10,
-            pieces: pieces.pieces,
-            outOfRange: {
-              color: '#999'
-            }
-          },
-          series: {
-            name: '水位',
-            type: 'line',
+          top: 50,
+          right: 10,
+          pieces: pieces.pieces,
+          outOfRange: {
+            color: '#999'
+          }
+        },
+        series: {
+          name: '水位',
+          type: 'line',
             symbolSize: 10,
             data: Object.values(content)
               .map(item => {

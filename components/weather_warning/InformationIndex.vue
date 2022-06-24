@@ -23,13 +23,13 @@ export default {
   },
   data() {
     return {
-      date: "",
+      date: '',
       dateFormat: null,
       weatherWarningState: this.$store.getters['weather/getWeatherWarningState']
     }
   },
   watch: {
-    "$store.state.weather.weatherWarningState" () {
+    '$store.state.weather.weatherWarningState'() {
       this.weatherWarningState = this.$store.getters['weather/getWeatherWarningState']
       this.parseInfoTime()
     }
@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     parseInfoTime() {
-      this.dateFormat = Intl.DateTimeFormat(undefined, {
+      this.dateFormat = Intl.DateTimeFormat('zh-Hans-CN', {
         hour12: false,
         year: 'numeric',
         month: '2-digit',
@@ -49,14 +49,14 @@ export default {
         second: '2-digit'
       })
       // noinspection JSUnresolvedVariable
-      if (this.weatherWarningState.message_time !== "") {
+      if (this.weatherWarningState.message_time !== '') {
         // noinspection JSUnresolvedVariable
         this.date = this.dateFormat.format(new Date(this.weatherWarningState.message_time))
         // noinspection JSUnresolvedVariable
-        this.$store.commit("setGetInfoTime",
+        this.$store.commit('setGetInfoTime',
           this.dateFormat.formatToParts(new Date(this.weatherWarningState.message_time)))
       } else {
-        this.date = "XXXX-XX-XX XX:XX:XX"
+        this.date = 'XXXX-XX-XX XX:XX:XX'
       }
     }
   }

@@ -23,13 +23,13 @@ export default {
   },
   data() {
     return {
-      date: "",
+      date: '',
       dateFormat: null,
       windState: this.$store.getters['wind/getWindState']
     }
   },
   watch: {
-    "$store.state.wind.windState" () {
+    '$store.state.wind.windState'() {
       this.windState = this.$store.getters['wind/getWindState']
       this.parseInfoTime()
     }
@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     parseInfoTime() {
-      this.dateFormat = Intl.DateTimeFormat(undefined, {
+      this.dateFormat = Intl.DateTimeFormat('zh-Hans-CN', {
         hour12: false,
         year: 'numeric',
         month: '2-digit',
@@ -51,7 +51,7 @@ export default {
       // noinspection JSUnresolvedVariable
       this.date = this.dateFormat.format(new Date(this.windState.message_time))
       // noinspection JSUnresolvedVariable
-      this.$store.commit("setGetInfoTime",
+      this.$store.commit('setGetInfoTime',
         this.dateFormat.formatToParts(new Date(this.windState.message_time)))
     }
   }
