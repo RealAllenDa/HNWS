@@ -2,9 +2,9 @@
   <div>
     <div id='main-container' class='main-container'>
       <InformationIndex
-        class='main-container main-overlay'
         :chinese-title='chineseTitle'
         :english-title='englishTitle'
+        class='main-container main-overlay'
       ></InformationIndex>
       <NoInformation
         v-if='noInformationAvail'
@@ -40,12 +40,12 @@ export default {
   },
   data() {
     return {
-      chineseTitle: "天气预警一览",
+      chineseTitle: '天气预警一览',
       englishTitle: 'Weather Warnings Overview',
       timer: null,
       noInformationAvail: true,
-      noInformationAvailText: "目前没有针对上海的气象预警。<br>" +
-        "No weather warnings for Shanghai is currently in effect."
+      noInformationAvailText: '目前没有针对上海的气象预警。<br>' +
+        'No weather warnings for Shanghai is currently in effect.'
     }
   },
   head() {
@@ -55,6 +55,9 @@ export default {
   },
   mounted() {
     logger.initialize()
+    window.screenshot = () => {
+      this.screenShot(false)
+    }
     this.updateInformationState()
     this.timer = setInterval(this.fetchWeatherWarningState, 60000)
   },
@@ -71,24 +74,24 @@ export default {
       try {
         this.$store.commit('weather/setWeatherWarningState', weatherWarningState.data)
         // noinspection JSUnresolvedVariable
-        this.noInformationAvail = this.$store.getters['weather/getWeatherWarningState'].message_time === "";
+        this.noInformationAvail = this.$store.getters['weather/getWeatherWarningState'].message_time === ''
       } catch (error) {
         logger.error(`Failed to set weather warning state: ${error}`)
       }
     },
     updateInformationState() {
       // noinspection JSUnresolvedVariable
-      this.noInformationAvail = this.$store.getters['weather/getWeatherWarningState'].message_time === "";
+      this.noInformationAvail = this.$store.getters['weather/getWeatherWarningState'].message_time === ''
     },
-    screenShot() {
-      htmlToImage.toSvg(document.getElementById("main-container"))
+    screenShot(download = true) {
+      htmlToImage.toSvg(document.getElementById('main-container'))
         .then(data => {
           // Filename like HNWS_Flood_Stations_YYYY_MM_DD_HH_MM_SS.png
           const infoTime = this.$store.getters.getGetInfoTime
           const filename = `HNWS_Warning_Weather_` +
             `${infoTime[0].value}_${infoTime[2].value}_${infoTime[4].value}_` +
             `${infoTime[6].value}_${infoTime[8].value}_${infoTime[10].value}.png`
-          SVGToPNG.download(data, filename)
+          SVGToPNG.download(data, filename, download)
         })
     }
   }

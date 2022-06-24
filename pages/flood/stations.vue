@@ -40,48 +40,50 @@
         显示平常水位站
       </b-form-checkbox>
     </div>
-    <div class='screenshot-container date-container'>
-      <label class='mr-3 label' for='date-start'>图表开始时间</label>
-      <b-input-group style='width: 200px;'>
-        <b-form-input
-          id='date-start'
-          v-model='startDate'
-          autocomplete='off'
-          placeholder='YYYY-MM-DD'
-          type='text'
-        ></b-form-input>
-        <b-input-group-append>
-          <b-form-datepicker
+    <client-only>
+      <div class='screenshot-container date-container'>
+        <label class='mr-3 label' for='date-start'>图表开始时间</label>
+        <b-input-group style='width: 200px;'>
+          <b-form-input
+            id='date-start'
             v-model='startDate'
-            button-only
-            locale='en-US'
-            right
-            style='z-index: 999999'
-            @context='updateDate'
-          ></b-form-datepicker>
-        </b-input-group-append>
-      </b-input-group>
-      <label class='mr-3 ml-5 label' for='date-end'>图表结束时间</label>
-      <b-input-group style='width: 200px;'>
-        <b-form-input
-          id='date-end'
-          v-model='endDate'
-          autocomplete='off'
-          placeholder='YYYY-MM-DD'
-          type='text'
-        ></b-form-input>
-        <b-input-group-append>
-          <b-form-datepicker
+            autocomplete='off'
+            placeholder='YYYY-MM-DD'
+            type='text'
+          ></b-form-input>
+          <b-input-group-append>
+            <b-form-datepicker
+              v-model='startDate'
+              button-only
+              locale='en-US'
+              right
+              style='z-index: 999999'
+              @context='updateDate'
+            ></b-form-datepicker>
+          </b-input-group-append>
+        </b-input-group>
+        <label class='mr-3 ml-5 label' for='date-end'>图表结束时间</label>
+        <b-input-group style='width: 200px;'>
+          <b-form-input
+            id='date-end'
             v-model='endDate'
-            button-only
-            locale='en-US'
-            right
-            style='z-index: 999999'
-            @context='updateDate'
-          ></b-form-datepicker>
-        </b-input-group-append>
-      </b-input-group>
-    </div>
+            autocomplete='off'
+            placeholder='YYYY-MM-DD'
+            type='text'
+          ></b-form-input>
+          <b-input-group-append>
+            <b-form-datepicker
+              v-model='endDate'
+              button-only
+              locale='en-US'
+              right
+              style='z-index: 999999'
+              @context='updateDate'
+            ></b-form-datepicker>
+          </b-input-group-append>
+        </b-input-group>
+      </div>
+    </client-only>
   </div>
 </template>
 
@@ -112,7 +114,7 @@ export default {
       chineseTitle: '水位观测站一览',
       englishTitle: 'Water Level Observation Stations Overview',
       timer: null,
-      displayThumbnail: true,
+      displayThumbnail: false,
       displayNormal: false,
       startDate:
         `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`,
@@ -127,6 +129,14 @@ export default {
   },
   mounted() {
     logger.initialize()
+    if (this.$route.query.show_station !== undefined) {
+      this.$store.commit('flood/setChartStartDate', this.startDate)
+      this.$store.commit('flood/setChartEndDate', this.endDate)
+      this.$refs.infoList.showStationStatus(this.$route.query.show_station)
+    }
+    window.screenshot = () => {
+      this.screenShot(false)
+    }
     this.timer = setInterval(this.fetchFloodState, 60000)
   },
   destroyed() {
@@ -149,8 +159,9 @@ export default {
       } catch (error) {
         logger.error(`Failed to set flood state: ${error}`)
       }
+      this.$refs.infoList.updateStationStatus()
     },
-    screenShot() {
+    screenShot(download = true) {
       htmlToImage.toSvg(document.getElementById('main-container'))
         .then(data => {
           // Filename like HNWS_Flood_Stations_YYYY_MM_DD_HH_MM_SS.png
@@ -158,7 +169,7 @@ export default {
           const filename = `HNWS_Flood_Stations_` +
             `${infoTime[0].value}_${infoTime[2].value}_${infoTime[4].value}_` +
             `${infoTime[6].value}_${infoTime[8].value}_${infoTime[10].value}.png`
-          SVGToPNG.download(data, filename)
+          SVGToPNG.download(data, filename, download)
         })
     }
   }

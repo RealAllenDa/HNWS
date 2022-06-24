@@ -44,6 +44,9 @@ export default {
   methods: {
     updateStationStatus() {
       this.$refs.information.updateStationDetail()
+    },
+    showStationStatus(station) {
+      this.$refs.information.showStationDetail(station)
     }
   }
 }

@@ -37,6 +37,7 @@ export default {
         this.$refs.chart,
         'dark'
       )
+      window.chart = this.chart
     },
     parsePieces(station) {
       const pieces = []
@@ -214,10 +215,11 @@ export default {
       const endTime = this.$store.getters['flood/getChartEndDate']
       // noinspection JSUnresolvedVariable
       this.chart.setOption({
+        backgroundColor: '#1D1D1D',
         title: {
           text: `${station.name} 水位一览 (${startTime} 00:00:00 - ${endTime} 23:59:59)`,
           left: '1%',
-          top: '1%'
+          top: '0.5%'
         },
         tooltip: {
           trigger: 'axis'
@@ -230,18 +232,25 @@ export default {
         xAxis: {
           data: Object.keys(content)
         },
-        yAxis: {},
+        yAxis: {
+          name: 'm',
+          align: 'left',
+          nameTextStyle: {
+            color: '#aaa',
+            nameLocation: 'start'
+          }
+        },
         toolbox: {
-            right: 10,
-            feature: {
-              dataZoom: {
-                yAxisIndex: 'none'
-              },
-              saveAsImage: {}
-            }
-          },
-          dataZoom: [
-            {
+          right: 10,
+          feature: {
+            dataZoom: {
+              yAxisIndex: 'none'
+            },
+            saveAsImage: {}
+          }
+        },
+        dataZoom: [
+          {
               startValue: Object.keys(content)[0]
             },
             {
@@ -284,11 +293,11 @@ export default {
 
 <style scoped>
 .flood-chart {
-  width: 1080px;
+  width: 1280px;
   height: 720px;
   position: absolute;
   z-index: 999999999;
   top: 235px;
-  left: 300px;
+  left: 170px;
 }
 </style>
