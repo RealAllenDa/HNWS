@@ -1,7 +1,7 @@
 {
   "name": "hazard-warning-system",
-  "version": "1.2.11",
-  "coreVersion": "2.1.0",
+  "version": "1.2.12",
+  "coreVersion": "2.1.6",
   "private": true,
   "scripts": {
     "dev": "set NUXT_PORT=3333 && nuxt",
