@@ -276,16 +276,6 @@ export default {
               .map(item => {
                 return item.current_level
               }),
-            markArea: {
-              data: [
-                {
-                  'type': 'min'
-                },
-                {
-                  'type': 'max'
-                }
-              ]
-            },
             markLine: {
               silent: true,
               lineStyle: {
