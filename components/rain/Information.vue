@@ -3,14 +3,14 @@
     <div v-if='parseType==="areaLevels"'>
       <div v-for='(i, j) in SPECIFIED_WARNING_LEVEL' :key='j'>
         <div v-if='areaState[j].length !== 0'>
-          <div class='state' :class='i.id'>{{ i.name }}</div>
+          <div :class='i.id' class='state'>{{ i.name }}</div>
           <div class='state-text-container'>
             <div v-for='k in areaState[j]' :key='k' class='state-text'>
               <span v-if='k==="more"' class='more'>
                 （更多...）
               </span>
               <span v-else>{{ k }}</span>
-              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -18,7 +18,7 @@
     <div v-else-if='parseType==="stationLevels"'>
       <div v-for='(i, j) in SPECIFIED_WARNING_LEVEL' :key='j'>
         <div v-if='stationState[j].length !== 0'>
-          <div class='state' :class='i.id'>{{ i.name }}</div>
+          <div :class='i.id' class='state'>{{ i.name }}</div>
           <div class='state-text-container'>
             <div v-for='k in stationState[j]' :key='k' class='state-text'>
               <span v-if='k==="more"' class='more'>
@@ -36,6 +36,7 @@
 <!--suppress JSUnresolvedVariable -->
 <script>
 import logger from 'assets/logger'
+
 export default {
   name: 'Information',
   props: {
@@ -138,7 +139,7 @@ export default {
   },
   methods: {
     initializeInformation() {
-      if (this.displayType === "rainLevel") {
+      if (this.displayType === 'rainLevel') {
         this.SPECIFIED_WARNING_LEVEL = this.WARNING_LEVEL_RAIN
         if (this.parseType === 'areaLevels') {
           this.parseRainAreas()
@@ -148,7 +149,7 @@ export default {
           logger.error('Failed to determine display type. ' +
             `(Type=${this.parseType})`)
         }
-      } else if (this.displayType === "rainPeriod") {
+      } else if (this.displayType === 'rainPeriod') {
         this.SPECIFIED_WARNING_LEVEL = this.WARNING_LEVEL_PERIOD
         if (this.parseType === 'areaLevels') {
           this.parsePeriodAreas()
@@ -159,7 +160,7 @@ export default {
             `(Type=${this.parseType})`)
         }
       } else {
-        logger.error("Failed to display information, " +
+        logger.error('Failed to display information, ' +
           `because the type isn't specified. (Type=${this.type})`)
       }
     },
@@ -172,8 +173,8 @@ export default {
         4: [],
         5: [],
         6: []
-      };
-      const rainAreas = {};
+      }
+      const rainAreas = {}
       this.rainState.rain.forEach((content) => {
         if (rainAreas[content.area] === undefined) {
           rainAreas[content.area] = content.level
@@ -198,11 +199,11 @@ export default {
       this.rainState.rain.forEach((content) => {
         if (!this.stationState[content.level].includes(content.name)) {
           if (this.stationState[content.level].length > 9) {
-            return;
+            return
           }
           if (this.stationState[content.level].length > 8) {
-            this.stationState[content.level][8] = "more"
-            return;
+            this.stationState[content.level][8] = 'more'
+            return
           }
           this.stationState[content.level].push(content.name)
         }
@@ -218,12 +219,12 @@ export default {
         5: [],
         6: []
       }
-      const periodAreas = {};
+      const periodAreas = {}
       this.rainState.rain.forEach((content) => {
         if (periodAreas[content.area] === undefined) {
-          periodAreas[content.area] = content.level
-        } else if (content.level > periodAreas[content.area]) {
-          periodAreas[content.area] = content.level
+          periodAreas[content.area] = content.period
+        } else if (content.period > periodAreas[content.area]) {
+          periodAreas[content.area] = content.period
         }
       })
       for (const i in periodAreas) {
@@ -243,11 +244,11 @@ export default {
       this.rainState.rain.forEach((content) => {
         if (!this.stationState[content.period].includes(content.name)) {
           if (this.stationState[content.period].length > 9) {
-            return;
+            return
           }
           if (this.stationState[content.period].length > 8) {
-            this.stationState[content.period][8] = "more"
-            return;
+            this.stationState[content.period][8] = 'more'
+            return
           }
           this.stationState[content.period].push(content.name)
         }
