@@ -1,15 +1,19 @@
 <template>
   <div class='information'>
-    <ShowDetail :text='detailText' :title='detailTitle'
-                :hidden='!isDetailShown'></ShowDetail>
+    <ShowDetail :hidden='!isDetailShown' :text='detailText'
+                :title='detailTitle'></ShowDetail>
     <div>
       <div v-for='(content, index) in areaState' :key='index'>
         <div class='district state'>{{ index }}</div>
         <div class='weather-alarm-list'>
           <div v-for='(i, index2) in sortWarningState(content)' :key='index2'
-               class='weather-alarms' @click='() => warningClick(content, index2)'>
-            <div class='circle' :class='i.class'></div>
-            <div style='margin-left: 10px;'>{{ i.type }}</div>
+               class='weather-alarms' @click='() => warningClick(i)'>
+            <div :class='i.class' class='circle'></div>
+            <div v-if='selectedWarning === i'
+                 class='more'
+                 style='margin-left: 10px;'>{{ i.type }}
+            </div>
+            <div v-else style='margin-left: 10px;'>{{ i.type }}</div>
           </div>
         </div>
       </div>
@@ -19,21 +23,23 @@
 <!--suppress JSUnresolvedVariable -->
 <script>
 import ShowDetail from './ShowDetail'
+
 export default {
   name: 'Information',
-  components: {ShowDetail},
+  components: { ShowDetail },
   data() {
     return {
       weatherWarningState: this.$store.getters['weather/getWeatherWarningState'],
       areaState: {},
-      detailText: "",
-      detailTitle: "",
+      detailText: '',
+      detailTitle: '',
+      selectedWarning: null,
       isDetailShown: false,
       correspondingWarningLevel: {
-        1: "蓝色",
-        2: "黄色",
-        3: "橙色",
-        4: "红色"
+        1: '蓝色',
+        2: '黄色',
+        3: '橙色',
+        4: '红色'
       }
     }
   },
@@ -44,46 +50,48 @@ export default {
     }
   },
   mounted() {
-   this.initializeInformation()
+    this.initializeInformation()
   },
   methods: {
     initializeInformation() {
-      this.areaState = {};
+      this.areaState = {}
       for (const i in this.weatherWarningState.districts) {
         this.weatherWarningState.districts[i].forEach((content) => {
           if (this.areaState[content.name] === undefined) {
-            this.areaState[content.name] = [];
+            this.areaState[content.name] = []
           }
           this.areaState[content.name].push({
-            "name": content.name,
-            "type": content.type,
-            "class": `level-${content.level}`,
-            "level": content.level,
-            "detail": content.detail
+            'name': content.name,
+            'type': content.type,
+            'class': `level-${content.level}`,
+            'level': content.level,
+            'detail': content.detail
           })
         })
       }
     },
     sortWarningState(arr) {
       return arr.slice().sort((a, b) => {
-        return b.level - a.level;
+        return b.level - a.level
       })
     },
-    warningClick(content, index) {
-      console.log(content);
+    warningClick(content) {
       if (this.isDetailShown) {
-        if (this.detailText === content[index].detail) {
-          this.isDetailShown = false;
+        if (this.detailText === content.detail) {
+          this.selectedWarning = null
+          this.isDetailShown = false
         } else {
-          this.detailTitle = content[index].name + " " +
-            content[index].type + this.correspondingWarningLevel[content[index].level] + "预警";
-          this.detailText = content[index].detail;
+          this.selectedWarning = content
+          this.detailTitle = content.name + ' ' +
+            content.type + this.correspondingWarningLevel[content.level] + '预警'
+          this.detailText = content.detail
         }
       } else {
-        this.isDetailShown = true;
-        this.detailTitle = content[index].name + " " +
-          content[index].type + this.correspondingWarningLevel[content[index].level] + "预警";
-        this.detailText = content[index].detail;
+        this.selectedWarning = content
+        this.isDetailShown = true
+        this.detailTitle = content.name + ' ' +
+          content.type + this.correspondingWarningLevel[content.level] + '预警'
+        this.detailText = content.detail
       }
     }
   }
