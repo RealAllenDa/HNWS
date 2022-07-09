@@ -1,6 +1,6 @@
 {
   "name": "hazard-warning-system",
-  "version": "1.2.14",
+  "version": "1.2.15",
   "coreVersion": "2.1.6",
   "private": true,
   "scripts": {
