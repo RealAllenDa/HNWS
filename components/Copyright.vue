@@ -1,7 +1,7 @@
 <template>
   <div class='copyright'>
-    ©2021 Homenetwork Warning System (HNWS) /
-    ©2021 Allen Da /
+    ©2022 Homenetwork Warning System (HNWS) /
+    ©2022 Allen Da /
     ©Data by officials /
     Map by DataV.GeoAtlas /
     HNWS {{ version }} - mighty-nuxt-core {{ coreVersion }}
@@ -10,6 +10,7 @@
 
 <script>
 import logger from '@/assets/logger'
+
 export default {
   name: 'Copyright',
   data() {
