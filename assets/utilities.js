@@ -12,9 +12,7 @@ class SVGToPNG {
         anchor.setAttribute('download', fileName)
         anchor.click()
       } else {
-        setTimeout(() => {
-          window.dataURL = pngImage.src
-        }, 2000)
+        window.dataURL = pngImage.src
       }
     }
 
