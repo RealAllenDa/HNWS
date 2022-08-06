@@ -1,5 +1,5 @@
 class SVGToPNG {
-  static download = function(src, fileName, download = false) {
+  static download = function(src, fileName, download = true) {
     const img = new Image()
 
     img.onload = function() {
