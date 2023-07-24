@@ -1,11 +1,11 @@
 <template>
-  <div class='copyright'>
-    ©2022 Homenetwork Warning System (HNWS) /
-    ©2022 Allen Da /
-    ©Data by officials /
+  <div v-if="customText === undefined" class='copyright'>
+    &copy; {{ new Date().getFullYear() }} Homenetwork Warning System (HNWS) /
     Map by DataV.GeoAtlas /
-    HNWS {{ version }} - mighty-nuxt-core {{ coreVersion }}
+    Does not necessarily reflect the views of the associated parties.
   </div>
+  <!-- eslint-disable-next-line -->
+  <div v-else class="copyright" v-html="customText"></div>
 </template>
 
 <script>
@@ -13,6 +13,13 @@ import logger from '@/assets/logger'
 
 export default {
   name: 'Copyright',
+  props: {
+    customText: {
+      required: false,
+      type: String,
+      default: undefined
+    }
+  },
   data() {
     return {
       coreVersion: logger.coreVersion,
