@@ -5,7 +5,9 @@ class Logger {
     this.mode = process.mode
     this.color = process.mode === 'production' ? '#43bb88' : 'orange'
     this.version = process.env.version ? process.env.version : 'DEV_TEST'
-    this.coreVersion = process.env.coreVersion ? process.env.coreVersion : 'DEV_TEST'
+    this.coreVersion = process.env.coreVersion
+      ? process.env.coreVersion
+      : 'DEV_TEST'
     this.useProductionAPI = useProductionAPI
     if (process.mode === 'development') {
       if (!useProductionAPI) {
@@ -16,34 +18,46 @@ class Logger {
     } else {
       this.apiUrl = 'https://api.daziannetwork.com'
     }
-  };
+  }
 
   static #formatCaller(callerData) {
     if (process.mode === 'development') {
-      return '[' + callerData.filePath + ':' + callerData.lineNumber + '] ' +
-        '[' + callerData.typeName + ' ' + callerData.functionName + ']'
+      return (
+        '[' +
+        callerData.filePath +
+        ':' +
+        callerData.lineNumber +
+        '] ' +
+        '[' +
+        callerData.typeName +
+        ' ' +
+        callerData.functionName +
+        ']'
+      )
     } else {
       return '[Production Mode]'
     }
-  };
+  }
 
   initialize() {
     // eslint-disable-next-line no-console
     console.log(
       `${process.env.logo}\n` +
-      `Version ${this.version}-${this.mode}. ` +
-      `Powered by mighty-nuxt-core ${this.coreVersion}.`,
+        `Version ${this.version}-${this.mode}. ` +
+        `Powered by mighty-nuxt-core ${this.coreVersion}.`,
       `color: ${this.color}; font-size: 20px; font-weight: bold;`
     )
     if (process.mode === 'development') {
       if (this.useProductionAPI) {
         // eslint-disable-next-line no-console
-        console.warn('%c!!! Using (Overridden) Production API Server: ' +
-          'It can cause unexpected behaviors.',
-          'color: orange; font-size: 20px; font-weight: bold;')
+        console.warn(
+          '%c!!! Using (Overridden) Production API Server: ' +
+            'It can cause unexpected behaviors.',
+          'color: orange; font-size: 20px; font-weight: bold;'
+        )
       }
     }
-  };
+  }
 
   debug(...text) {
     if (process.mode === 'development') {
@@ -53,7 +67,7 @@ class Logger {
         console.log(`${Logger.#formatCaller(callerData)}: ${content}`)
       })
     }
-  };
+  }
 
   error(...messageList) {
     const callerData = callerId.getData(this.error)
