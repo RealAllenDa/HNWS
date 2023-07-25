@@ -8,10 +8,10 @@
         {{ typhoonNameList[typhoonSelectedIndex] }} 路径预报
       </span><br>
       <span id="display-time">
+        于
         <span v-if="typhoonInformation[typhoonInformationIndex] != undefined" id="receive-time">
           {{ typhoonInformation[typhoonInformationIndex]["time"].replace("T", " ") }}
         </span>
-        时
       </span>
     </div>
     <hr style="margin: unset !important; border: none !important;">
