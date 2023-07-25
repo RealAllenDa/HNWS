@@ -10,6 +10,7 @@ let L;
 if (isBrowser) {
   L = require('leaflet');
   require("leaflet.chinatmsproviders");
+  require("leaflet-semicircle");
 }
 
 export default {
@@ -39,9 +40,9 @@ export default {
       combinedTyphoonLines: [],
       combinedTyphoonRoutes: [],
       typhoonCircles: {
-        "radius7": 0,
-        "radius10": 0,
-        "radius12": 0
+        "radius7_quad": null,
+        "radius10_quad": null,
+        "radius12_quad": null
       },
       typhoonRouteGroup: undefined,
       typhoonPointsGroup: undefined,
@@ -142,14 +143,14 @@ export default {
           color: 'white',
           dashArray: content.is_future ? 5 : 0
         }));
-        if (Array.prototype.hasOwnProperty.call(this.typhoonCircles, "radius7")) {
-          this.typhoonCircles.radius7 = !content.is_future ? rawContent.radius7 : this.typhoonCircles.radius7;
+        if (Array.prototype.hasOwnProperty.call(this.typhoonCircles, "radius7_quad")) {
+          this.typhoonCircles.radius7_quad = !content.is_future ? rawContent.radius7_quad : this.typhoonCircles.radius7_quad;
         }
-        if (Array.prototype.hasOwnProperty.call(this.typhoonCircles, "radius10")) {
-          this.typhoonCircles.radius10 = !content.is_future ? rawContent.radius10 : this.typhoonCircles.radius10;
+        if (Array.prototype.hasOwnProperty.call(this.typhoonCircles, "radius10_quad")) {
+          this.typhoonCircles.radius10_quad = !content.is_future ? rawContent.radius10_quad : this.typhoonCircles.radius10_quad;
         }
-        if (Array.prototype.hasOwnProperty.call(this.typhoonCircles, "radius12")) {
-          this.typhoonCircles.radius12 = !content.is_future ? rawContent.radius12 : this.typhoonCircles.radius12;
+        if (Array.prototype.hasOwnProperty.call(this.typhoonCircles, "radius12_quad")) {
+          this.typhoonCircles.radius12_quad = !content.is_future ? rawContent.radius12_quad : this.typhoonCircles.radius12_quad;
         }
       });
       this.drawTyphoonCircles();
@@ -175,27 +176,45 @@ export default {
     },
     drawTyphoonCircles() {
       this.typhoonCircleGroup = L.layerGroup();
-      this.typhoonCircleGroup.addLayer(L.circle(this.typhoonLocationNow,
-        this.typhoonCircles.radius7 * 1000,
-        {
-          color: "yellow",
-          fillOpacity: 0.4,
-          fillColor: "yellow"
-        }));
-      this.typhoonCircleGroup.addLayer(L.circle(this.typhoonLocationNow,
-        this.typhoonCircles.radius10 * 1000,
-        {
-          color: "red",
-          fillOpacity: 0.4,
-          fillColor: "red"
-        }));
-      this.typhoonCircleGroup.addLayer(L.circle(this.typhoonLocationNow,
-        this.typhoonCircles.radius12 * 1000, {
-          color: "purple",
-          fillOpacity: 0.4,
-          fillColor: "purple"
-        }));
+      this.drawTyphoonCircle(this.typhoonCircles.radius7_quad, 7);
+      this.drawTyphoonCircle(this.typhoonCircles.radius10_quad, 10);
+      this.drawTyphoonCircle(this.typhoonCircles.radius12_quad, 12);
       this.typhoonCircleGroup.addTo(this.map);
+    },
+    drawTyphoonCircle(circle, strength) {
+      const circles = [circle.ne, circle.se, circle.nw, circle.sw];
+      let color = 'white';
+      let opacity = 0.1;
+      if (strength === 7) {
+        color = '#fff500';
+        opacity = 0.5
+      } else if (strength === 10) {
+        color = '#ff4600';
+        opacity = 0.7
+      } else if (strength === 12) {
+        color = '#b40068';
+        opacity = 0.8
+      } else {
+        return;
+      }
+      circles.forEach((radius, i) => {
+        let index = i;
+        if (i === 2) {
+          index++;
+        } else if (i === 3) {
+          index--;
+        }
+
+        const circle = new L.SemiCircle(this.typhoonLocationNow, {
+          radius: radius * 1000,
+          startAngle: index * 90,
+          stopAngle: (index + 1) * 90,
+          fillColor: color,
+          fillOpacity: opacity,
+          stroke: false
+        });
+        this.typhoonCircleGroup.addLayer(circle);
+      })
     },
     drawTyphoonPoint(location, color, isHighlighted = false) {
       this.typhoonPointsGroup.addLayer(L.circleMarker(location, {
@@ -203,6 +222,8 @@ export default {
         radius: isHighlighted ? 10 : 4,
         fillOpacity: 1
       }));
+    },
+    drawStrength(circle, latLng, strength) {
     },
     setBounds() {
       const bound = L.latLngBounds();

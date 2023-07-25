@@ -23,6 +23,7 @@
     "echarts": "^5.3.2",
     "html-to-image": "^1.7.0",
     "leaflet": "^1.7.1",
+    "leaflet-semicircle": "^2.0.4",
     "leaflet.chinatmsproviders": "^3.0.6",
     "nuxt": "^2.15.7",
     "nuxt-leaflet": "^0.0.25"
