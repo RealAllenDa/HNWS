@@ -10,7 +10,7 @@ let L;
 if (isBrowser) {
   L = require('leaflet');
   require("leaflet.chinatmsproviders");
-  require("leaflet-semicircle");
+  require("~/plugins/typhoon")
 }
 
 export default {
@@ -182,39 +182,26 @@ export default {
       this.typhoonCircleGroup.addTo(this.map);
     },
     drawTyphoonCircle(circle, strength) {
-      const circles = [circle.ne, circle.se, circle.nw, circle.sw];
       let color = 'white';
       let opacity = 0.1;
       if (strength === 7) {
         color = '#fff500';
-        opacity = 0.5
+        opacity = 0.2
       } else if (strength === 10) {
         color = '#ff4600';
-        opacity = 0.7
+        opacity = 0.4
       } else if (strength === 12) {
         color = '#b40068';
-        opacity = 0.8
+        opacity = 0.5
       } else {
         return;
       }
-      circles.forEach((radius, i) => {
-        let index = i;
-        if (i === 2) {
-          index++;
-        } else if (i === 3) {
-          index--;
-        }
-
-        const circle = new L.SemiCircle(this.typhoonLocationNow, {
-          radius: radius * 1000,
-          startAngle: index * 90,
-          stopAngle: (index + 1) * 90,
-          fillColor: color,
-          fillOpacity: opacity,
-          stroke: false
-        });
-        this.typhoonCircleGroup.addLayer(circle);
+      const cs = new L.Typhoon(this.typhoonLocationNow, circle, {
+        color,
+        fillOpacity: opacity,
+        stroke: true
       })
+      this.typhoonCircleGroup.addLayer(cs);
     },
     drawTyphoonPoint(location, color, isHighlighted = false) {
       this.typhoonPointsGroup.addLayer(L.circleMarker(location, {
@@ -222,8 +209,6 @@ export default {
         radius: isHighlighted ? 10 : 4,
         fillOpacity: 1
       }));
-    },
-    drawStrength(circle, latLng, strength) {
     },
     setBounds() {
       const bound = L.latLngBounds();
