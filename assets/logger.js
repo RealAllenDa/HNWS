@@ -80,6 +80,6 @@ class Logger {
   }
 }
 
-const logger = new Logger()
+const logger = new Logger(true)
 
 export default logger

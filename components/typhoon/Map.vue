@@ -182,6 +182,9 @@ export default {
       this.typhoonCircleGroup.addTo(this.map);
     },
     drawTyphoonCircle(circle, strength) {
+      if (circle.sw === 0 && circle.nw === 0 && circle.se === 0 && circle.ne === 0) {
+        return;
+      }
       let color = 'white';
       let opacity = 0.1;
       if (strength === 7) {
